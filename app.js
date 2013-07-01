@@ -2,11 +2,14 @@ var express = require("express");
 var app = express();
 app.use(express.logger());
 
+var mongoose = require("mongoose");
+mongoose.connect(process.env.MONGOHQ_URL);
+
 app.get('/', function(request, response) {
-  response.send('Hello World!');
+	response.send('Hello World!');
 });
 
-var port = process.env.PORT || 8888;
+var port = process.env.PORT || 5000;
 app.listen(port, function() {
-  console.log("Listening on " + port);
+ 	console.log("Listening on " + port);
 });

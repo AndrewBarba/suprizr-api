@@ -6,7 +6,8 @@
     "mongoose": "x",
     "cors" : "x",
     "mocha" : "x",
-    "should" : "x"
+    "should" : "x",
+    "supertest" : "x"
   },
   "engines": {
     "node": "x",

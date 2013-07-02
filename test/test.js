@@ -2,7 +2,11 @@
  ** This contains the Suprizr API unit tests
  **/
 
-var assert = require("assert");
+ var should = require('should'); 
+ var assert = require('assert');
+ var request = require('supertest');  
+ var mongoose = require('mongoose');
+
 
 describe('Array', function(){
  	describe('#indexOf()', function(){

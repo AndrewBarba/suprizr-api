@@ -3,3 +3,6 @@ server:
 
 prod:
 	git push heroku master
+
+tests:
+	mocha

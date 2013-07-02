@@ -5,7 +5,8 @@
     "express": "x",
     "mongoose": "x",
     "cors" : "x",
-    "mocha" : "x"
+    "mocha" : "x",
+    "should" : "x"
   },
   "engines": {
     "node": "x",

@@ -1,4 +1,8 @@
-var assert = require("assert")
+/***
+ ** This contains the Suprizr API unit tests
+ **/
+
+var assert = require("assert");
 
 describe('Array', function(){
  	describe('#indexOf()', function(){

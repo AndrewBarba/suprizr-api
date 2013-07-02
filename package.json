@@ -4,7 +4,8 @@
   "dependencies": {
     "express": "x",
     "mongoose": "x",
-    "cors" : "x"
+    "cors" : "x",
+    "mocha" : "x"
   },
   "engines": {
     "node": "x",

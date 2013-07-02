@@ -3,12 +3,13 @@
  ** 2013 Suprizr Inc.
  **/
 
-express = require("express");
-cors = require("cors");
+settings = require("./settings");
 
 /**
  * Initialize Express
  */
+var express = require("express"),
+       cors = require("cors");
 app = express();
 app.configure(function () {
 	app.use(express.logger());

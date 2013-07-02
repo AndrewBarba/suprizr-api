@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "dependencies": {
     "express": "x",
-    "mongoose": "x"
+    "mongoose": "x",
+    "cors" : "x"
   },
   "engines": {
     "node": "x",

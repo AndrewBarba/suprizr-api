@@ -1,16 +1,23 @@
 {
-  "name": "suprizr-backend",
-  "version": "0.0.1",
-  "dependencies": {
-    "express": "x",
-    "mongoose": "x",
-    "cors" : "x",
-    "mocha" : "x",
-    "should" : "x",
-    "supertest" : "x"
-  },
-  "engines": {
-    "node": "x",
-    "npm": "x"
-  }
+    "name": "suprizr-backend",
+    
+    "version": "0.0.1",
+
+    "dependencies": {
+        "express": "x",
+        "mongoose": "x",
+        "cors" : "x",
+        "mocha" : "x",
+        "should" : "x",
+        "supertest" : "x"
+    },
+
+    "engines": {
+        "node": "x",
+        "npm": "x"
+    },
+
+    "scripts" : {
+        "test": "make tests"
+    }
 }

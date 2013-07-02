@@ -20,9 +20,9 @@ app.configure(function () {
  	app.use(express.query()); // Automatic query string parsing
  	app.use(cors()); // enable cross domain requests
  	app.use(function(req, res, next){ // add appropriate headers
- 		res.header('Content-Type', 'application/json; charset=UTF-8');
- 		res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
- 		res.header('Pragma', 'no-cache');
+ 		res.header("Content-Type", "application/json; charset=UTF-8");
+ 		res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
+ 		res.header("Pragma", "no-cache");
  		next();
  	});
  	app.use(app.router);

@@ -2,17 +2,18 @@
  ** This contains the Suprizr API unit tests
  **/
 
- var should = require('should'); 
- var assert = require('assert');
- var request = require('supertest');  
- var mongoose = require('mongoose');
+var should = require("should"); 
+var assert = require("assert");
+var request = require("supertest");  
+var mongoose = require("mongoose");
+ 
+var suprizr = require("suprizr"); 
+suprizr.init({
+	"test" : true
+});
 
-
-describe('Array', function(){
- 	describe('#indexOf()', function(){
-   		it('should return -1 when the value is not present', function(){
-      		assert.equal(-1, [1,2,3].indexOf(5));
-      		assert.equal(-1, [1,2,3].indexOf(0));
-    	});
-  	});
+describe("Test",function(){
+	it("should find the variable name in the user model", function(){
+		assert.equal(suprizr.models.user.name,"Andrew");
+	});
 });

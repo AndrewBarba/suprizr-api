@@ -38,6 +38,7 @@ mongoose.connect(process.env.MONGOHQ_URL);
  * Initializes the Suprizr API
  */
 suprizr = require("suprizr");
+suprizr.init();
 
 /**
  * Start the server

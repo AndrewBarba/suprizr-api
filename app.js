@@ -57,7 +57,7 @@ mongoose.connection.once("open", function(){
 /**
  * Initializes the Suprizr API
  */
-var suprizr = require("suprizr")(app, mongoose);
+var suprizr = require("./suprizr")(app, mongoose);
 
 /**
  * Start the server

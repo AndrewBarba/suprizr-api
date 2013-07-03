@@ -6,11 +6,7 @@ var should = require("should");
 var assert = require("assert");
 var request = require("supertest");  
 var mongoose = require("mongoose");
- 
-var suprizr = require("suprizr"); 
-suprizr.init({
-	"test" : true
-});
+var suprizr = require("suprizr")(false, mongoose, {"test":true}); 
 
 describe("Test",function(){
 	it("should find the variable name in the user model", function(){

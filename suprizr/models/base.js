@@ -2,7 +2,7 @@
 var mongoose = require("mongoose");
 
 var BaseSchema = new mongoose.Schema({
-    guid: { type: String, default: SP.simpleGUID, index: { unique: true } },
+    _id: { type: String, default: SP.simpleGUID, index: { unique: true } },
     updated_at: { type: Date, default: Date.now },
     created_at: { type: Date, default: Date.now },
 });

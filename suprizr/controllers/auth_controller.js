@@ -30,13 +30,8 @@ module.exports = function(app) {
 	
 	var controller = new AuthController();
 
-	app.post('/auth/register', function(req, res, next) {
-		controller.register(req, res, next);
-	});
-
-	app.get('/auth/login', function(req, res, next) {
-		controller.login(req, res, next);
-	});
+	app.post('/auth/register', controller.register);
+	app.get('/auth/login', controller.login);
 
 	return controller;
 }

@@ -59,7 +59,8 @@ describe("Authentication",function(){
 		Auth.getUser(new_auth.auth_token, function(err, user){
 			should.not.exist(err);
 			should.exist(user);
-			should.exist(user.guid);
+			should.exist(user._id);
+			user._id.length.should.equal(32);
 			user.email.should.equal(new_user.email);
 			done();
 		});

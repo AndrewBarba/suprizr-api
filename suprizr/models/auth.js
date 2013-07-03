@@ -5,11 +5,10 @@ var BaseSchema = require("./base"),
         extend = require("mongoose-schema-extend"),
           User = require("./user");
 
-var AuthSchema = new Schema({
+var AuthSchema = BaseSchema.extend({
     auth_token : { type: String, default: SP.guid, required: true, index: { unique: true } },
-    user       : { type: Schema.Types.ObjectId, ref: "User", required: true, index : true },
+    user       : { type: String, ref: "User", required: true, index : true },
     valid      : { type: Boolean, default: true },
-    created_at : { type: Date, default: Date.now } 
 });
 
 AuthSchema.statics.register = function(data, callback) {

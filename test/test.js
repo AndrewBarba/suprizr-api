@@ -10,6 +10,6 @@ var suprizr = require("suprizr")(false, mongoose, {"test":true});
 
 describe("Test",function(){
 	it("should find the variable name in the user model", function(){
-		assert.equal(suprizr.models.user.name,"Andrew");
+		// assert here
 	});
 });

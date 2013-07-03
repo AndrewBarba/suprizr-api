@@ -1,5 +1,4 @@
 
-
 function RootController() {
 	
 	this.getRoot = function(req, res, next) {
@@ -26,10 +25,10 @@ module.exports = function(app) {
 	var root = new RootController();
 
 	app.get('/', function(req, res, next) {
-		res.json(root.getRoot);
+		res.json(root.getRoot());
 	});
 	app.get('/status', function(req, res, next) {
-		res.json(root.getStatus);
+		res.json(root.getStatus());
 	});
 
 	return root;

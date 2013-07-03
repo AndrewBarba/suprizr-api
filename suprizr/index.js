@@ -2,12 +2,12 @@
 function Suprizr(app) {
 	
 	// Load Suprizr models
-	this.models = require("./models");
+	this.model = require("./models");
 
 	// Load controllers if we're not testing
 	if (app) {
-		var controllers = require("./controllers");
-		this.controllers = controllers(app);
+        var controller = require("./controllers");
+		this.controller = controller(app);
 	}
 }
 

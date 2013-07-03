@@ -43,22 +43,25 @@ UserSchema.methods.validatePassword = function(password, callback) {
 };
 
 UserSchema.statics.login = function(email, password, callback) {
-	this.findOne({ "email" : email }, function(err, user){
-		if (err || !user) return callback(err, false);
-		user.validatePassword(password, function(err, success){
-			if (err || !success) return callback(err, false);
-			return callback(false, user);
-		});
-	});
+	this
+        .findOne({ "email" : email })
+        .select("+password")
+        .exec(function(err, user){
+    		if (err || !user) return callback(err);
+            user.validatePassword(password, function(err, success){
+                if (err || !success) return callback(err);
+    			return callback(null, user);
+    		});
+        });
 };
 
 UserSchema.statics.loginSocial = function(social_id, account, callback) {
     account += "_id";
     this.findOne({ account : social_id }, function(err, user){
-        if (err || !user) return callback(err, false);
+        if (err || !user) return callback(err);
         user.validatePassword(password, function(err, success){
-            if (err || !success) return callback(err, false);
-            return callback(false, user);
+            if (err || !success) return callback(err);
+            return callback(null, user);
         });
     });
 };
@@ -68,7 +71,7 @@ UserSchema.statics.create = function(data, callback) {
     SP.each(user_fields, function(key){
         var val = data[key];
         if (val) {
-            user[field] = val;
+            user[key] = val;
         }
     });
     user.location = [data["lat"], data["lon"]];

@@ -5,10 +5,17 @@ var BaseSchema = require("./base"),
         bcrypt = require("bcrypt"),
         SALT_WORK_FACTOR = process.env.SALT_WORK_FACTOR || 10;
 
-var UserSchema = BaseSchema.extend({
+var user_fields = {
     email: { type: String, required: true, index: { unique: true } },
-    password: { type: String, required: true }
-});
+    password: { type: String, required: true, select: false },
+    facebook_id: { type: String, index: { unique: true } },
+    twitter_id: { type: String, index: { unique: true } },
+    phone_number: { type: String },
+    zipcode: { type: String },
+    location: [Number]
+}
+
+var UserSchema = BaseSchema.extend(user_fields);
 
 UserSchema.pre("save", function(next) {
     var self = this;
@@ -45,8 +52,30 @@ UserSchema.statics.login = function(email, password, callback) {
 	});
 };
 
-UserSchema.statics.testing = function() {
-	return "Hello World";
+UserSchema.statics.loginSocial = function(social_id, account, callback) {
+    account += "_id";
+    this.findOne({ account : social_id }, function(err, user){
+        if (err || !user) return callback(err, false);
+        user.validatePassword(password, function(err, success){
+            if (err || !success) return callback(err, false);
+            return callback(false, user);
+        });
+    });
 };
 
-module.exports = mongoose.model("User", UserSchema);
+UserSchema.statics.create = function(data, callback) {
+    var user = new UserModel({});
+    SP.each(user_fields, function(key){
+        var val = data[key];
+        if (val) {
+            user[field] = val;
+        }
+    });
+    user.location = [data["lat"], data["lon"]];
+    user.save(function(err){
+        callback(err, user);
+    });
+}
+
+var UserModel = mongoose.model("User", UserSchema);
+module.exports = UserModel;

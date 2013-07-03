@@ -49,15 +49,19 @@ var options = {
 		socketOptions : { keepAlive : 1 } // keep the connection open even if inactive
 	},
 };
-mongoose.connect(process.env.MONGOHQ_URL, options);
-mongoose.connection.once("open", function(){
-	trace("Connected to MongoHQ");
+mongoose.connect(process.env.MONGOHQ_URL, options, function(err){
+	if (!err) {
+		trace("Connected to MongoHQ");
+	} else {
+		throw "Failed to conntent to MongoHQ!";
+	}
 });
 
 /**
  * Initializes the Suprizr API
  */
-var suprizr = require("./suprizr")(app, mongoose);
+var suprizr = require("./suprizr"),
+        api = suprizr(app);
 
 /**
  * Start the server

@@ -7,6 +7,7 @@
         "express" : "x",
         "mongoose" : "x",
         "mongoose-schema-extend" : "x",
+        "bcrypt" : "x",
         "cors" : "x",
         "mocha" : "x",
         "should" : "x",

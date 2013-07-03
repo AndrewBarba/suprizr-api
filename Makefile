@@ -6,4 +6,4 @@ prod:
 	heroku config:set ENV=production --account suprizr-api
 
 tests:
-	mocha
+	mocha --timeout 10000

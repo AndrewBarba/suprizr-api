@@ -15,11 +15,11 @@ var user_fields = {
     address: [String], // array of addresses for user
     zipcode: { type: String }, // USA zipcode
     phone_number: { type: String }, // cell number
-}
+};
 
 var additional_fields = {
     password: { type: String, required: true, select: false },
-    restaurant: { type: String, ref: "restaurant", select: false },
+    restaurant: { type: String, ref: "restaurant" },
     admin: { type: Boolean, default: false, select: false },
     stripe_id: { type: String, index: { unique: true } },
 };
@@ -92,4 +92,5 @@ UserSchema.statics.create = function(data, callback) {
 };
 
 var User = mongoose.model("User", UserSchema);
+User.allowed_keys = Object.keys(user_fields);
 module.exports = User;

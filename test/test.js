@@ -59,7 +59,7 @@ describe("Authentication",function(){
 		});
 	});
 	it("should get the current user via auth token", function(done){
-		Auth.getUser(new_auth.auth_token, function(err, user){
+		Auth.getCurrentUser(new_auth.auth_token, function(err, user){
 			should.not.exist(err);
 			should.exist(user);
 			should.exist(user._id);

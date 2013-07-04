@@ -17,8 +17,19 @@ BaseSchema.pre("save", function(next) {
     next();
 });
 
-BaseSchema.statics.putData = function(id, data, callback) {
-    this.findByIdAndUpdate(id, data, callback);
+BaseSchema.statics.putData = function(id, data, callback, valid_keys) {
+    var valid_data = {};
+    if (valid_keys) {
+        SP.each(valid_keys, function(i,key){
+            var val = data[key];
+            if (val) {
+                valid_data[key] = val;
+            }
+        });
+    } else {
+        valid_data = data;
+    }
+    this.findByIdAndUpdate(id, valid_data, callback);
 };
 
 module.exports = BaseSchema;

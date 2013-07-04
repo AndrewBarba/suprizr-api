@@ -49,18 +49,31 @@ AuthSchema.statics.login = function(email, password, callback) {
 	});
 };
 
-AuthSchema.statics.getUser = function(token, callback) {
+AuthSchema.statics.getCurrentUser = function(req, callback, admin) {
+	var token = (typeof req == "string") ? req : req.query.auth;
 	if (token) {
 		this
 			.findOne({ "auth_token" : token, "valid" : true })
-			.populate("user")
+			.populate("user", "+admin")
 			.exec(function(err, auth){
 				if (err || !auth) return callback(err);
-				callback(null, auth.user);
+				if (admin) {
+					if (auth.user.admin) {
+						callback(null, auth.user);
+					} else {
+						callback();
+					}
+				} else {
+					callback(null, auth.user);
+				}
 			});
 	} else {
 		callback();
 	}
+};
+
+AuthSchema.statics.getStaffUser = function(req, callback) {
+	this.getCurrentUser(req, callback, true);
 };
 
 var Auth = mongoose.model("Authentication", AuthSchema);

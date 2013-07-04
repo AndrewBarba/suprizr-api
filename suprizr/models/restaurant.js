@@ -13,4 +13,5 @@ var restaurant_fields = {
 
 var RestaurantSchema = BaseSchema.extend(restaurant_fields);
 
-module.exports = mongoose.model("Restaurant", RestaurantSchema);
+var Restaurant = mongoose.model("Restaurant", RestaurantSchema);
+module.exports = Restaurant;

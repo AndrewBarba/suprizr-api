@@ -37,6 +37,7 @@ var {TEMPLATE}Schema = BaseSchema.extend({
 	// do something
 };
 
-module.exports = mongoose.model("{TEMPLATE}", {TEMPLATE}Schema);
+var {TEMPLATE} = mongoose.model("{TEMPLATE}", {TEMPLATE}Schema);
+module.exports = {TEMPLATE};
 
 **/

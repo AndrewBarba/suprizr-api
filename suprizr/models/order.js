@@ -3,11 +3,7 @@ var BaseSchema = require("./base"),
         Schema = mongoose.Schema,
         extend = require("mongoose-schema-extend");
 
-var status_enum = [
-    "open",
-    "ordered",
-    "delivered"
-];
+var status_enum = [ "open", "ordered", "delivered" ];
 var order_fields = {
     meal: { type: String, ref: "Meal", required: true },
     user: { type: String, ref: "User", required: true },
@@ -19,4 +15,5 @@ var order_fields = {
 
 var OrderSchema = BaseSchema.extend(order_fields);
 
-module.exports = mongoose.model("Order", OrderSchema);
+var Order = mongoose.model("Order", OrderSchema);
+module.exports = Order;

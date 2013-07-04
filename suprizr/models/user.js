@@ -77,7 +77,7 @@ UserSchema.statics.loginSocial = function(social_id, account, callback) {
 };
 
 UserSchema.statics.create = function(data, callback) {
-    var user = new UserModel({});
+    var user = new User({});
     SP.each(user_fields, function(key){
         var val = data[key];
         if (val) {
@@ -89,7 +89,7 @@ UserSchema.statics.create = function(data, callback) {
     user.save(function(err){
         callback(err, user);
     });
-}
+};
 
-var UserModel = mongoose.model("User", UserSchema);
-module.exports = UserModel;
+var User = mongoose.model("User", UserSchema);
+module.exports = User;

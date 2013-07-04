@@ -13,4 +13,5 @@ var meal_fields = {
 
 var MealSchema = BaseSchema.extend(meal_fields);
 
-module.exports = mongoose.model("Meal", MealSchema);
+var Meal = mongoose.model("Meal", MealSchema);
+module.exports = Meal;

@@ -9,6 +9,7 @@ var user_fields = {
     email: { type: String, required: true, index: { unique: true } },
     facebook_id: { type: String, index: { unique: true } },
     twitter_id: { type: String, index: { unique: true } },
+    stripe_id: { type: String, index: { unique: true } },
     location: [Number], // array of length 2 = [lat, lon]
     first_name: String,
     last_name: String, 
@@ -21,7 +22,6 @@ var additional_fields = {
     password: { type: String, required: true, select: false },
     restaurant: { type: String, ref: "Restaurant" },
     admin: { type: Boolean, default: false, select: false },
-    stripe_id: { type: String, index: { unique: true } },
 };
 
 var fields = SP.extend(additional_fields, user_fields);

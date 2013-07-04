@@ -6,7 +6,7 @@ var BaseSchema = require("./base"),
 var status_enum = [ "open", "ordered", "delivered" ];
 var order_fields = {
     meal: { type: String, ref: "Meal", required: true },
-    user: { type: String, ref: "User", required: true },
+    user: { type: String, ref: "User" },
     order_status: { type: String, enum: status_enum, required: true },
     order_details: String,
     feedback: String,

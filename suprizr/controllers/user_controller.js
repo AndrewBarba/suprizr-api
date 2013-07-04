@@ -7,7 +7,7 @@ function UserController() {
 	this.getUser = function(req, res, next) {
 		Auth.getCurrentUser(req, function(err, user){
 			if (err || !user) {
-				res.send(404, { error : "There is no valid user with auth token "+token });
+				res.send(401, { error : "Access denied" });
 			} else {
 				res.json(user);
 			}
@@ -17,7 +17,7 @@ function UserController() {
 	this.getById = function(req, res, next) {
 		Auth.getCurrentUser(req, function(){
 			if (err || !user) {
-				res.send(404, { error : "There is no valid user with auth token "+token });
+				res.send(401, { error : "Access denied" });
 			} else {
 				var id = req.param.id;
 				User.findById(id, function(err, user){
@@ -34,7 +34,7 @@ function UserController() {
 	this.putData = function(req, res, next) {
 		Auth.getCurrentUser(req, function(err, user){
 			if (err || !user) {
-				res.send(404, { error : "There is no valid user with auth token "+token });
+				res.send(401, { error : "Access denied" });
 			} else {
 				var id = user._id;
 				var body = req.body;

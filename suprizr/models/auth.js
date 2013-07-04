@@ -3,6 +3,7 @@ var BaseSchema = require("./base"),
       mongoose = require("mongoose"),
         Schema = mongoose.Schema,
         extend = require("mongoose-schema-extend"),
+        sphttp = require("../modules/sphttp"),
           User = require("./user");
 
 var AuthSchema = BaseSchema.extend({
@@ -23,6 +24,14 @@ AuthSchema.statics.register = function(data, callback) {
     			.populate("user")
     			.exec(callback);
     	});
+    });
+};
+
+AuthSchema.statics.registerFacebook = function(token, data, callback) {
+    sphttp.fb("/", token, function(err, fb){
+    	if (err || !fb) return callback(err);
+    	data = SP.extend(data, fb);
+    	data.facebook_id = fb._id;
     });
 };
 

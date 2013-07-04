@@ -5,10 +5,11 @@ var BaseSchema = require("./base"),
 
 var restaurant_fields = {
     name: String,
-    location: [Number],
+    location: { type: [Number], index: { "loc" : "2d" } },
     address: String,
     description: String,
-    radius: Number, // distance in Meters a restaurant delivers
+    radius: Number, // distance in MILES a restaurant delivers. NOTE: query radius is x/69 since there are 69 degrees in a mile
+    delivery_fee: Number,
 };
 
 var RestaurantSchema = BaseSchema.extend(restaurant_fields);

@@ -10,9 +10,12 @@ var user_fields = {
     password: { type: String, required: true, select: false },
     facebook_id: { type: String, index: { unique: true } },
     twitter_id: { type: String, index: { unique: true } },
-    phone_number: { type: String },
-    zipcode: { type: String },
-    location: [Number]
+    location: [Number], // array of length 2 = [lat, lon]
+    first_name: String,
+    last_name: String, 
+    address: [String], // array of addresses for user
+    zipcode: { type: String }, // USA zipcode
+    phone_number: { type: String }, // cell number
 }
 
 var UserSchema = BaseSchema.extend(user_fields);

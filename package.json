@@ -11,7 +11,8 @@
         "cors" : "x",
         "mocha" : "x",
         "should" : "x",
-        "supertest" : "x"
+        "supertest" : "x",
+        "stripe" : "x"
     },
 
     "engines" : {

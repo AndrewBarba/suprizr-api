@@ -15,14 +15,20 @@ function UserController() {
 	}
 
 	this.getById = function(req, res, next) {
-		var id = req.param.id;
-		User.findById(id, function(err, user){
+		Auth.getCurrentUser(req, function(){
 			if (err || !user) {
-				res.send(404, { error : "Could not find user with id "+id });
+				res.send(404, { error : "There is no valid user with auth token "+token });
 			} else {
-				res.json(user);
+				var id = req.param.id;
+				User.findById(id, function(err, user){
+					if (err || !user) {
+						res.send(404, { error : "Could not find user with id "+id });
+					} else {
+						res.json(user);
+					}
+				});
 			}
-		});
+		})
 	};
 
 	this.putData = function(req, res, next) {

@@ -19,7 +19,7 @@ var user_fields = {
 
 var additional_fields = {
     password: { type: String, required: true, select: false },
-    restaurant: { type: String, ref: "restaurant" },
+    restaurant: { type: String, ref: "Restaurant" },
     admin: { type: Boolean, default: false, select: false },
     stripe_id: { type: String, index: { unique: true } },
 };

@@ -9,6 +9,11 @@ function Suprizr(app) {
         var controller = require("./controllers");
 		this.controller = controller(app);
 	}
+
+    // Load Stripe
+    var stripe_key = SP_SETTINGS.stripe[SP_ENV];
+    if (!stripe_key || !stripe_key.length) stripe_key = SP_SETTINGS.stripe.development;
+    this.stripe = require("stripe")(stripe_key);
 }
 
 var _suprizr = false;

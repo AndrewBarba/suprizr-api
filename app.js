@@ -3,13 +3,13 @@
  ** 2013 Suprizr Inc.
  **/
 
-// fetch settings
-settings = require("./settings");
+// Globals
+SP_SETTINGS = require("./settings");
+SP_ENV = process.env.ENV;
 
 // custom logging function
 trace = function(a, force) {
-	var env = process.env.ENV;
-	if (env != "production" || force) {
+	if (SP_ENV != "production" || force) {
 		return console.log(a);
 	}
 	return false;
@@ -56,13 +56,6 @@ mongoose.connect(process.env.MONGOHQ_URL, options, function(err){
 		throw "Failed to conntent to MongoHQ!";
 	}
 });
-
-/**
- * Setup Stripe
- */
-var stripe_key = settings.stripe[process.env.ENV];
-if (!stripe_key || !stripe_key.length) stripe_key = settings.stripe.development;
-var stripe = require("stripe")(stripe_key);
 
 /**
  * Initializes the Suprizr API

@@ -17,4 +17,8 @@ BaseSchema.pre("save", function(next) {
     next();
 });
 
+BaseSchema.statics.putData = function(id, data, callback) {
+    this.findByIdAndUpdate(id, data, callback);
+};
+
 module.exports = BaseSchema;

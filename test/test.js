@@ -2,6 +2,9 @@
  ** This contains the Suprizr API unit tests
  **/
 
+// Globals
+SP_SETTINGS = require("../settings");
+SP_ENV = "development";
 trace = console.log;
 
 var should = require("should"), 
@@ -62,6 +65,14 @@ describe("Authentication",function(){
 			should.exist(user._id);
 			user._id.length.should.equal(32);
 			user.email.should.equal(new_user.email);
+			done();
+		});
+	});
+	it("should update the existing user", function(done){
+		User.putData(new_user._id, {"first_name" : "Test"}, function(err, user){
+			should.not.exist(err);
+			should.exist(user);
+			user.first_name.should.equal("Test");
 			done();
 		});
 	});

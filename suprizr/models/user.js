@@ -7,10 +7,8 @@ var BaseSchema = require("./base"),
 
 var user_fields = {
     email: { type: String, required: true, index: { unique: true } },
-    password: { type: String, required: true, select: false },
     facebook_id: { type: String, index: { unique: true } },
     twitter_id: { type: String, index: { unique: true } },
-    stripe_id: { type: String, index: { unique: true } },
     location: [Number], // array of length 2 = [lat, lon]
     first_name: String,
     last_name: String, 
@@ -19,7 +17,15 @@ var user_fields = {
     phone_number: { type: String }, // cell number
 }
 
-var UserSchema = BaseSchema.extend(user_fields);
+var additional_fields = {
+    password: { type: String, required: true, select: false },
+    restaurant: { type: String, ref: "restaurant", select: false },
+    admin: { type: Boolean, default: false, select: false },
+    stripe_id: { type: String, index: { unique: true } },
+};
+
+var fields = SP.extend(additional_fields, user_fields);
+var UserSchema = BaseSchema.extend(fields);
 
 UserSchema.pre("save", function(next) {
     var self = this;
@@ -44,10 +50,6 @@ UserSchema.pre("save", function(next) {
 
 UserSchema.methods.validatePassword = function(password, callback) {
     bcrypt.compare(password, this.password, callback);
-};
-
-UserSchema.methods.putData = function(data, callback) {
-    
 };
 
 UserSchema.statics.login = function(email, password, callback) {
@@ -82,6 +84,7 @@ UserSchema.statics.create = function(data, callback) {
             user[key] = val;
         }
     });
+    user.password = data["password"];
     user.location = [data["lat"], data["lon"]];
     user.save(function(err){
         callback(err, user);

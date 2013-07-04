@@ -10,6 +10,7 @@ var user_fields = {
     password: { type: String, required: true, select: false },
     facebook_id: { type: String, index: { unique: true } },
     twitter_id: { type: String, index: { unique: true } },
+    stripe_id: { type: String, index: { unique: true } },
     location: [Number], // array of length 2 = [lat, lon]
     first_name: String,
     last_name: String, 
@@ -43,6 +44,10 @@ UserSchema.pre("save", function(next) {
 
 UserSchema.methods.validatePassword = function(password, callback) {
     bcrypt.compare(password, this.password, callback);
+};
+
+UserSchema.methods.putData = function(data, callback) {
+    
 };
 
 UserSchema.statics.login = function(email, password, callback) {

@@ -58,6 +58,13 @@ mongoose.connect(process.env.MONGOHQ_URL, options, function(err){
 });
 
 /**
+ * Setup Stripe
+ */
+var stripe_key = settings.stripe[process.env.ENV];
+if (!stripe_key || !stripe_key.length) stripe_key = settings.stripe.development;
+var stripe = require("stripe")(stripe_key);
+
+/**
  * Initializes the Suprizr API
  */
 var suprizr = require("./suprizr"),

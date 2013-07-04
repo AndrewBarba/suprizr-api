@@ -1,3 +1,6 @@
 {
-	
+	"stripe" : {
+		"production" : "pk_live_ziHXYJHEcwG0MEghRpyrNY93",
+		"development" : "pk_test_xBSy6LGd9tiFsKrQzO8gAyR8"
+	}
 }

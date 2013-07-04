@@ -32,6 +32,7 @@ AuthSchema.statics.registerFacebook = function(token, data, callback) {
     	if (err || !fb) return callback(err);
     	data = SP.extend(data, fb);
     	data.facebook_id = fb._id;
+    	Auth.register(data, callback);
     });
 };
 

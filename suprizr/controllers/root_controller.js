@@ -26,8 +26,8 @@ module.exports = function(app) {
 	
 	var root = new RootController();
 
-	app.get('/', root.getRoot);
-	app.get('/status', root.getStatus);
+	app.get("/", root.getRoot);
+	app.get("/status", root.getStatus);
 
 	return root;
 }

@@ -6,5 +6,8 @@
 	"facebook" : {
 		"app_id" : "285543038247615",
 		"secret" : "9f61d884e3c14214805c84ef5009fbab"
+	},
+	"google" : {
+		"api_key" : "AIzaSyADEwRuwXbsqJM-35XXVAkBfXhYVsUgFi4"
 	}
 }

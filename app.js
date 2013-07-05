@@ -32,7 +32,9 @@ app.configure(function () {
  	app.use(express.cookieParser()); // JSON cookies
  	app.use(express.query()); // Automatic query string parsing
  	app.use(cors()); // enable cross domain requests
+ 	app.use(express.static("public", {maxAge: 60*60*24*365*1000}));
  	app.use(function(req, res, next){ // add appropriate headers
+ 		trace(req.url);
  		res.header("Content-Type", "application/json; charset=UTF-8");
  		res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
  		res.header("Pragma", "no-cache");

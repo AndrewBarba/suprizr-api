@@ -4,8 +4,8 @@
     "version" : "0.0.1",
 
     "dependencies": {
-        "express" : "x",
-        "mongoose" : "x",
+        "express" : "3.x",
+        "mongoose" : "3.x",
         "mongoose-schema-extend" : "x",
         "bcrypt" : "x",
         "cors" : "x",
@@ -16,7 +16,7 @@
     },
 
     "engines" : {
-        "node": "x",
+        "node": "0.10.x",
         "npm": "x"
     },
 

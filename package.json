@@ -9,10 +9,13 @@
         "mongoose-schema-extend" : "x",
         "bcrypt" : "x",
         "cors" : "x",
+        "stripe" : "x"
+    },
+
+    "devDependencies": {
         "mocha" : "x",
         "should" : "x",
-        "supertest" : "x",
-        "stripe" : "x"
+        "supertest" : "x"
     },
 
     "engines" : {

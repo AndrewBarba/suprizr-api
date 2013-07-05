@@ -5,7 +5,7 @@
 
 // Globals
 SP_SETTINGS = require("./settings");
-SP_ENV = process.env.ENV;
+SP_ENV = process.env.NODE_ENV;
 
 // custom logging function
 trace = function(a, force) {

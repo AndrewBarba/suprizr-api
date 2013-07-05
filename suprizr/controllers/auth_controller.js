@@ -59,9 +59,10 @@ module.exports = function(app) {
 	
 	var controller = new AuthController();
 
-	app.post("/auth/register", controller.register);
-	app.post("/auth/login", controller.login);
-	app.put("/auth/password", controller.changePassword);
+	app.post("/auth/register", controller.register); // registers a new user
+	app.post("/auth/login", controller.login); // logs in a user via email and password
+	app.post("/auth/login/facebook", controller.login.facebook); // logs in a user via Facebook
+	app.put("/auth/password", controller.changePassword); // changes a users password
 
 	return controller;
 }

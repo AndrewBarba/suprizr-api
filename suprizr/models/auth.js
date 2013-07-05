@@ -105,7 +105,7 @@ AuthSchema.statics.getCurrentUser = function(req, callback, admin) {
 	}
 };
 
-AuthSchema.statics.getStaffUser = function(req, callback) {
+AuthSchema.statics.getAdminUser = function(req, callback) {
 	this.getCurrentUser(req, callback, true);
 };
 

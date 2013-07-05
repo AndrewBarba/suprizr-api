@@ -1,8 +1,9 @@
 
 function Controller(app) {
-	this.root = require("./root_controller")(app);
-	this.root = require("./user_controller")(app);
-	this.root = require("./auth_controller")(app);
+	this.RootController = require("./root_controller")(app);
+	this.UserController = require("./user_controller")(app);
+	this.AuthController = require("./auth_controller")(app);
+	this.RestaurantController = require("./restaurant_controller")(app);
 }
 
 var _controller = false;

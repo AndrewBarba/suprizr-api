@@ -1,31 +1,50 @@
 
 var Restaurant = require("../models/restaurant"),
-	      Auth = require("../models/auth");
+	      Auth = require("../models/auth"),
+	     Error = require("./error_controller");
 
 function RestaurantController() {
 
 	this.createRestaurant = function(req, res, next) {
 		Auth.getAdminUser(req, function(err, user){
 			if (err || !user) {
-				res.send(401, "You are not authorized to use this endpoint");
+				return Error.e401(res, err);
 			} else {
 				Restaurant.create(req.body, function(err, rest){
 					if (err || !rest) {
-						res.send(400, "Something went wrong when creating the restaurant: "+err);
+						return Error.e400(res, err);
 					} else {
-						res.json(rest);
+						return res.json(rest);
 					}
 				});
 			}
 		})
 	};
+
+	this.putData = function(req, res, next) {
+		var id = req.query.id;
+		Auth.getCurrentUser(req, function(err, user){
+			if (err || !user || user.restaurant != id) {
+				return Error.e401(res, err);
+			} else {
+				Restaurant.putData(id, req.body, function(err, rest){
+					if (err || !rest) {
+						return Error.e400(res, err);
+					} else {
+						return res.json(rest);
+					}
+				}, Restaurant.allowed_keys);
+			}
+		}, "+restaurant");
+	}
 }
 
 module.exports = function(app) {
 	
 	var controller = new RestaurantController();
 
-	app.post('/restaurant', controller.createRestaurant);
+	app.post("/restaurant", controller.createRestaurant);
+	app.put("/restaurant/:id", controller.putData);
 
 	return controller;
 }

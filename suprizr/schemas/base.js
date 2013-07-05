@@ -3,8 +3,8 @@ var mongoose = require("mongoose");
 
 var data = {
     _id: { type: String, default: SP.simpleGUID, index: { unique: true } },
-    updated_at: { type: Date, default: Date.now },
-    created_at: { type: Date, default: Date.now },
+    updated_at: { type: Number, default: Date.now },
+    created_at: { type: Number, default: Date.now },
 };
 
 var BaseSchema = new mongoose.Schema(data);
@@ -21,6 +21,7 @@ BaseSchema.pre("save", function(next) {
 
 BaseSchema.statics.putData = function(id, data, callback, valid_keys) {
     var valid_data = {};
+    if (!valid_keys) valid_keys = this.allowed_keys;
     if (valid_keys) {
         SP.each(valid_keys, function(i,key){
             var val = data[key];

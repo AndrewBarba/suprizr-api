@@ -17,8 +17,9 @@ var RestaurantSchema = BaseSchema.extend(restaurant_fields);
 
 RestaurantSchema.statics.create = function(data, callback) {
 	var restaurant = new Restaurant({});
-	restaurant.putData(data, callback, restaurant_fields);
+	restaurant.putData(data, callback, Restaurant.allowed_keys);
 }
 
 var Restaurant = mongoose.model("Restaurant", RestaurantSchema);
+Restaurant.allowed_keys = Object.keys(restaurant_fields);
 module.exports = Restaurant;

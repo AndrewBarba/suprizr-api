@@ -1,15 +1,16 @@
 
 var User = require("../models/user"),
-	Auth = require("../models/auth");
+	Auth = require("../models/auth"),
+   Error = require("./error_controller");
 
 function UserController() {
 
 	this.getUser = function(req, res, next) {
 		Auth.getCurrentUser(req, function(err, user){
 			if (err || !user) {
-				res.send(401, { error : "Access denied" });
+				return Error.e401(res, err, "Access denied");
 			} else {
-				res.json(user);
+				return res.json(user);
 			}
 		});
 	}
@@ -22,9 +23,9 @@ function UserController() {
 				var id = req.param.id;
 				User.findById(id, function(err, user){
 					if (err || !user) {
-						res.send(404, { error : "Could not find user with id "+id });
+						return Error.e404(res, err, "Could not find user with id "+id);
 					} else {
-						res.json(user);
+						return res.json(user);
 					}
 				});
 			}
@@ -40,9 +41,9 @@ function UserController() {
 				var body = req.body;
 				User.putData(id, body, function(err, user){
 					if (err || !user) {
-						res.send(404, { error : err || "Could not find user with id "+id });
+						return Error.e404(res, err, "Could not find user with id "+id);
 					} else {
-						res.json(user);
+						return res.json(user);
 					}
 				}, User.allowed_keys);
 			}

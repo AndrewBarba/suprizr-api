@@ -20,4 +20,5 @@ var meal_fields = {
 var MealSchema = BaseSchema.extend(meal_fields);
 
 var Meal = mongoose.model("Meal", MealSchema);
+Meal.allowed_keys = Object.keys(meal_fields);
 module.exports = Meal;

@@ -38,6 +38,9 @@ SP.simpleGUID = function() {
 	for (var i = 0; i < 8; i++) s += SP.s4();
 	return s;
 }
+SP.now = function() {
+    return (new Date()).getTime();
+}
 SP.dateString = function(date) { // returns a nicely formatted date string
     if (!date) date = new Date();
     return (date.getMonth()+1) + "." + date.getDate() + "." + date.getFullYear();

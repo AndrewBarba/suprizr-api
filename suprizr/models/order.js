@@ -16,4 +16,5 @@ var order_fields = {
 var OrderSchema = BaseSchema.extend(order_fields);
 
 var Order = mongoose.model("Order", OrderSchema);
+Order.allowed_keys = Object.keys(order_fields);
 module.exports = Order;

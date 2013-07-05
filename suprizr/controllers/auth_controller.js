@@ -1,14 +1,15 @@
 
-var Auth = require("../models/auth");
+var Auth = require("../models/auth"),
+   Error = require("./error_controller");
 
 function AuthController() {
 
 	this.register = function(req, res, next) {
 		Auth.register(req.body, function(err, auth){
 			if (err ||!user) {
-				res.send(400, { error: "Could not register user" });
+				return Error.e400(res, err, "Could not register user");
 			} else {
-				res.json(auth);
+				return res.json(auth);
 			}
 		});
 	};
@@ -18,9 +19,9 @@ function AuthController() {
 		var password = req.body.password;
 		Auth.login(email, password, function(err, auth){
 			if (err || !auth) {
-				res.send(401, { error: "Invalid user name or password" });
+				return Error.e401(res, err, "Invalid user name or password");
 			} else {
-				res.json(auth);
+				return res.json(auth);
 			}
 		});
 	}
@@ -29,9 +30,9 @@ function AuthController() {
 		var fb_auth = req.query.facebook_auth;
 		Auth.login.facebook(fb_auth, function(err, auth){
 			if (err || !auth) {
-				res.send(401, { error: "Invalid facebook token" });
+				return Error.e401(res, err, "Invalid facebook token");
 			} else {
-				res.json(auth);
+				return res.json(auth);
 			}
 		});
 	}
@@ -39,15 +40,15 @@ function AuthController() {
 	this.changePassword = function(req, res, next) {
 		Auth.getCurrentUser(req, function(err, user){
 			if (err || !user) {
-				res.send(401, { error: "Invalid auth token" });
+				return Error.e401(res, err, "Invalid auth token");
 			} else {
 				var password = req.body.password;
 				var old_password = req.body.old_password;
 				Auth.changePassword(user, password, old_password, function(err, auth){
 					if (err || !auth) {
-						res.send(400, { error: err });
+						return Error.e400(res, err);
 					} else {
-						res.json(auth);
+						return res.json(auth);
 					}
 				});
 			}

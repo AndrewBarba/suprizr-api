@@ -1,5 +1,6 @@
 
-var mongoose = require("mongoose");
+var mongoose = require("mongoose"),
+       Error = require("./error_controller");
 
 function RootController() {
 	
@@ -16,9 +17,12 @@ function RootController() {
 	};
 
 	this.getStatus = function(req, res, next) {
-		return res.json({
-			"status" : mongoose.connection.readyState ? "OK" : false
-		});
+		var connected = mongoose.connection.readyState == 1;
+		if (connected) {
+			return res.json({ "status" : "OK" });
+		} else {
+			return Error.e400(res, null, "Lost connection to MongoHQ");
+		}
 	};
 }
 

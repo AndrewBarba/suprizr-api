@@ -82,23 +82,15 @@ AuthSchema.statics.getAuth = function(user, callback) {
 		});
 };
 
-AuthSchema.statics.getCurrentUser = function(req, callback, admin) {
+AuthSchema.statics.getCurrentUser = function(req, callback, populate) {
 	var token = (typeof req == "string") ? req : req.query.auth;
 	if (token) {
 		this
 			.findOne({ "auth_token" : token, "valid" : true })
-			.populate("user", "+admin +password")
+			.populate("user", populate)
 			.exec(function(err, auth){
 				if (err || !auth) return callback(err);
-				if (admin) {
-					if (auth.user.admin) {
-						callback(null, auth.user);
-					} else {
-						callback();
-					}
-				} else {
-					callback(null, auth.user);
-				}
+				callback(null, auth.user);
 			});
 	} else {
 		callback();
@@ -106,7 +98,14 @@ AuthSchema.statics.getCurrentUser = function(req, callback, admin) {
 };
 
 AuthSchema.statics.getAdminUser = function(req, callback) {
-	this.getCurrentUser(req, callback, true);
+	this.getCurrentUser(req, function(err, user){
+		if (err || !user) return callback(err);
+		if (user.admin) {
+			callback(null, user);
+		} else {
+			callback();
+		}
+	}, "+admin");
 };
 
 var Auth = mongoose.model("Authentication", AuthSchema);

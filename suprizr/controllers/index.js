@@ -4,6 +4,7 @@ function Controller(app) {
 	this.UserController = require("./user_controller")(app);
 	this.AuthController = require("./auth_controller")(app);
 	this.RestaurantController = require("./restaurant_controller")(app);
+	this.ErrorController = require("./error_controller");
 }
 
 var _controller = false;
@@ -27,7 +28,7 @@ module.exports = function(app) {
 	
 	var controller = new {TEMPLATE}Controller();
 
-	app.get('/', function(req, res, next) {
+	app.get("/", function(req, res, next) {
 		// res.json();
 	});
 

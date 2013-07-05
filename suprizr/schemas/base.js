@@ -1,11 +1,13 @@
 
 var mongoose = require("mongoose");
 
-var BaseSchema = new mongoose.Schema({
+var data = {
     _id: { type: String, default: SP.simpleGUID, index: { unique: true } },
     updated_at: { type: Date, default: Date.now },
     created_at: { type: Date, default: Date.now },
-});
+};
+
+var BaseSchema = new mongoose.Schema(data);
 
 BaseSchema.pre("save", function(next) {
     if (!this.guid) {
@@ -32,4 +34,5 @@ BaseSchema.statics.putData = function(id, data, callback, valid_keys) {
     this.findByIdAndUpdate(id, valid_data, callback);
 };
 
+BaseSchema.dataScheme = data;
 module.exports = BaseSchema;

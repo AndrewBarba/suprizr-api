@@ -11,7 +11,7 @@ module.exports = new Model();
 
 /** MODEL TEMPLATE
 
-var BaseSchema = require("./base"),
+var BaseSchema = require("../schemas/base"),
       mongoose = require("mongoose"),
         Schema = mongoose.Schema,
         extend = require("mongoose-schema-extend");

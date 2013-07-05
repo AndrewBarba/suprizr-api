@@ -1,16 +1,11 @@
 
-var BaseSchema = require("./base"),
+var BaseSchema = require("../schemas/base"),
+LocationSchema = require("../schemas/location");
       mongoose = require("mongoose"),
         extend = require("mongoose-schema-extend");
         bcrypt = require("bcrypt"),
         sphttp = require("../modules/sphttp"),
         SALT_WORK_FACTOR = process.env.SALT_WORK_FACTOR || 10;
-
-var LocationSchema = new mongoose.Schema({
-    "formatted_addres" : String,
-    "google_id" : String,
-    "location" : [Number]
-});
 
 var user_fields = {
     email: { type: String, required: true, index: { unique: true } },

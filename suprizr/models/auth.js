@@ -1,5 +1,5 @@
 
-var BaseSchema = require("./base"),
+var BaseSchema = require("../schemas/base"),
       mongoose = require("mongoose"),
         Schema = mongoose.Schema,
         extend = require("mongoose-schema-extend"),
@@ -21,22 +21,25 @@ AuthSchema.statics.register = function(data, callback) {
     	auth.save(function(err){
     		Auth
     			.findOne({ "auth_token" : auth.auth_token })
-    			.populate("user")
+    			.populate("user", "+password")
     			.exec(callback);
     	});
     });
 };
 
-AuthSchema.statics.changePassword = function(user, password, callback) {
+AuthSchema.statics.changePassword = function(user, password, old_password, callback) {
     this.findOne({ "user" : user._id }, function(err, auth){
     	if (err || !auth) return callback(err);
-    	user.password = password;
-    	auth.auth_token = SP.guid();
-    	auth.save(function(err){
-    		if (err) return callback(err);
-    		user.save(function(err){
+    	user.validatePassword(old_password, function(err, success){
+    		if (err || !success) return callback(err);
+    		user.password = password;
+    		auth.auth_token = SP.guid();
+    		auth.save(function(err){
     			if (err) return callback(err);
-    			callback(null, auth);
+    			user.save(function(err){
+    				if (err) return callback(err);
+    				callback(null, auth);
+    			});
     		});
     	});
     });
@@ -84,7 +87,7 @@ AuthSchema.statics.getCurrentUser = function(req, callback, admin) {
 	if (token) {
 		this
 			.findOne({ "auth_token" : token, "valid" : true })
-			.populate("user", "+admin")
+			.populate("user", "+admin +password")
 			.exec(function(err, auth){
 				if (err || !auth) return callback(err);
 				if (admin) {

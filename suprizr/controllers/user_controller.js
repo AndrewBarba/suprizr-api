@@ -54,9 +54,9 @@ module.exports = function(app) {
 	
 	var controller = new UserController();
 
-	app.get("/user", controller.getUser);
-	app.get("/user/:id", controller.getById);
-	app.put("/user", controller.putData);
+	app.get("/user", controller.getUser); // gets the current user via auth_token
+	app.get("/user/:id", controller.getById); // gets a user by id
+	app.put("/user", controller.putData); // changes data for the current user
 
 	return controller;
 }

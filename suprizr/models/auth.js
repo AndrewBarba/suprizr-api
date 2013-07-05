@@ -27,36 +27,56 @@ AuthSchema.statics.register = function(data, callback) {
     });
 };
 
-AuthSchema.statics.registerFacebook = function(token, data, callback) {
-    sphttp.fb("/", token, function(err, fb){
-    	if (err || !fb) return callback(err);
-    	data = SP.extend(data, fb);
-    	data.facebook_id = fb._id;
-    	Auth.register(data, callback);
+AuthSchema.statics.changePassword = function(user, password, callback) {
+    this.findOne({ "user" : user._id }, function(err, auth){
+    	if (err || !auth) return callback(err);
+    	user.password = password;
+    	auth.auth_token = SP.guid();
+    	auth.save(function(err){
+    		if (err) return callback(err);
+    		user.save(function(err){
+    			if (err) return callback(err);
+    			callback(null, auth);
+    		});
+    	});
     });
 };
 
 AuthSchema.statics.login = function(email, password, callback) {
 	User.login(email, password, function(err, user){
 		if (err || !user) return callback(err);
-		Auth
-			.findOne({ "user" : user._id })
-			.populate("user")
-			.exec(function(err, auth){
-				if (err || !auth) return callback(err);
-				// If they logged in and their auth wasn't valid, regenerate an auth_token
-				if (!auth.valid) {
-					auth.valid = true;
-					auth.auth_token = SP.guid();
-					auth.save(function(err){
-						if (err) return callback(err);
-						callback(null, auth);
-					});
-				} else {
-					callback(null, auth);
-				}
-			});
+		Auth.getAuth(user, callback);
 	});
+};
+
+AuthSchema.statics.login.facebook = function(token, callback) {
+    sphttp.fb("/me", token, function(err, fb){
+    	if (err || !fb) return callback(err);
+		User.findOne({ "facebook_id" : fb.id }, function(err, user){
+		    if (err || !user) return callback(err);
+		    Auth.getAuth(user, callback);
+		});
+    });
+};
+
+AuthSchema.statics.getAuth = function(user, callback) {
+	this
+		.findOne({ "user" : user._id })
+		.populate("user")
+		.exec(function(err, auth){
+			if (err || !auth) return callback(err);
+			// If they logged in and their auth wasn't valid, regenerate an auth_token
+			if (!auth.valid) {
+				auth.valid = true;
+				auth.auth_token = SP.guid();
+				auth.save(function(err){
+					if (err) return callback(err);
+					callback(null, auth);
+				});
+			} else {
+				callback(null, auth);
+			}
+		});
 };
 
 AuthSchema.statics.getCurrentUser = function(req, callback, admin) {

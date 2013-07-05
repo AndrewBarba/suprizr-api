@@ -76,6 +76,20 @@ describe("Authentication",function(){
 			done();
 		});
 	});
+	it("should change the users password", function(done){
+		Auth.changePassword(new_user, "helloworld", function(err, auth){
+			should.not.exist(err);
+			should.exist(auth);
+			auth.auth_token.should.not.equal(new_auth.auth_token);
+			Auth.login(email, "helloworld", function(err, auth){
+				should.not.exist(err);
+				should.exist(auth);
+				should.exist(auth.user);
+				auth.user.email.should.equal(email);
+				done();
+			});
+		});
+	});
 	it("should delete the user and the auth object", function(done){
 		new_user.remove(function(err){
 			should.not.exist(err);

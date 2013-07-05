@@ -3,14 +3,22 @@ var BaseSchema = require("./base"),
       mongoose = require("mongoose"),
         extend = require("mongoose-schema-extend");
         bcrypt = require("bcrypt"),
+        sphttp = require("../modules/sphttp"),
         SALT_WORK_FACTOR = process.env.SALT_WORK_FACTOR || 10;
+
+var LocationSchema = new mongoose.Schema({
+    "formatted_addres" : String,
+    "google_id" : String,
+    "location" : [Number]
+});
 
 var user_fields = {
     email: { type: String, required: true, index: { unique: true } },
     facebook_id: { type: String, index: { unique: true } },
+    facebook_auth: String,
     twitter_id: { type: String, index: { unique: true } },
     stripe_id: { type: String, index: { unique: true } },
-    location: [Number], // array of length 2 = [lat, lon]
+    locations: [LocationSchema], // array of past order locations
     first_name: String,
     last_name: String, 
     address: [String], // array of addresses for user
@@ -52,6 +60,47 @@ UserSchema.methods.validatePassword = function(password, callback) {
     bcrypt.compare(password, this.password, callback);
 };
 
+UserSchema.methods.putData = function(data, callback) {
+    var user = this;
+    SP.each(user_fields, function(key){
+        var val = data[key];
+        if (val) {
+            user[key] = val;
+        }
+    });
+    var pass = data["password"];
+    if (pass) user.password = pass;
+    var locs = data["locations"];
+    if (locs && locs.length) {
+        user.locations = user.locations.concat(locs);
+    }
+    var fb_auth = data["facebook_auth"];
+    if (fb_auth) {
+        user.connect.facebook(fb_auth, function(err, user){
+            if (err || !user) return callback(err);
+            callback(null, user); // facebook connect method will save
+        });
+    } else {
+        user.save(function(err){
+            callback(err, user);
+        });
+    }
+};
+
+UserSchema.methods.connect = function(){};
+
+UserSchema.methods.connect.facebook = function(fb_auth, callback) {
+    sphttp.fb("/me", fb_auth, function(err, fb){
+        if (err || !fb) return callback(err);
+        this.facebook_id = fb.id;
+        this.facebook_auth = fb_auth;
+        this.save(function(err){
+            if (err) return callback(err);
+            callback(null, this);
+        });
+    });
+};
+
 UserSchema.statics.login = function(email, password, callback) {
 	this
         .findOne({ "email" : email })
@@ -65,30 +114,9 @@ UserSchema.statics.login = function(email, password, callback) {
         });
 };
 
-UserSchema.statics.loginSocial = function(social_id, account, callback) {
-    account += "_id";
-    this.findOne({ account : social_id }, function(err, user){
-        if (err || !user) return callback(err);
-        user.validatePassword(password, function(err, success){
-            if (err || !success) return callback(err);
-            return callback(null, user);
-        });
-    });
-};
-
 UserSchema.statics.create = function(data, callback) {
     var user = new User({});
-    SP.each(user_fields, function(key){
-        var val = data[key];
-        if (val) {
-            user[key] = val;
-        }
-    });
-    user.password = data["password"];
-    user.location = [data["lat"], data["lon"]];
-    user.save(function(err){
-        callback(err, user);
-    });
+    user.putData(data, callback);
 };
 
 var User = mongoose.model("User", UserSchema);

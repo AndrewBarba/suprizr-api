@@ -6,10 +6,10 @@ var BaseSchema = require("../schemas/base"),
 var meal_fields = {
     name: String,
     description: String,
-    health: Number, // number between 0 - 1 indicating health. 0 = healthy
+    health: { type: Number, index: true }, // number between 0 - 1 indicating health. 0 = healthy
     restaurant: { type: String, ref: "Restaurant" },
     num_orders: Number, // number of times this meal was ordered
-    price: { type: Number, select: false }, // Restaurants meal price
+    price: Number, // Restaurants meal price
     ingredients: {
     	gluten_free: Boolean,
     	dairy_free: Boolean,

@@ -31,6 +31,9 @@ AuthSchema.statics.register.facebook = function(token, fbdata, callback) {
     	"auth_token" : token
     };
     fbdata.id = null;
+    if (!fbdata.password) {
+    	fbdata.password = SP.simpleGUID();
+    }
     Auth.register(fbdata, callback);
 };
 
@@ -62,7 +65,7 @@ AuthSchema.statics.login = function(email, password, callback) {
 AuthSchema.statics.login.facebook = function(token, callback) {
     sphttp.fb("/me", token, function(err, fb){
     	if (err || !fb) return callback(err);
-		User.findOne({ "facebook_id" : fb.id }, function(err, user){
+		User.findOne({ "facebook.id" : fb.id }, function(err, user){
 		    if (err || !user) {
 		    	Auth.register.facebook(token, fb, callback);
 		    } else {

@@ -8,16 +8,16 @@ LocationSchema = require("../schemas/location");
         SALT_WORK_FACTOR = process.env.SALT_WORK_FACTOR || 10;
 
 var user_fields = {
-    email: { type: String, required: true, index: { unique: true } },
+    email: { type: String, index: { unique: true, sparse: true } },
     facebook: { 
-        id: { type: String, index: { unique: true } },
+        id: { type: String, index: { unique: true, sparse: true } },
         username: String,
         auth_token: String
     },
     twitter: { 
-        id: { type: String, index: { unique: true } },
+        id: { type: String, index: { unique: true, sparse: true } },
     },
-    stripe_id: { type: String, index: { unique: true } },
+    stripe_id: { type: String, index: { unique: true, sparse: true } },
     locations: [LocationSchema], // array of past order locations
     first_name: String,
     last_name: String, 

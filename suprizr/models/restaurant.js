@@ -7,12 +7,11 @@ LocationSchema = require("../schemas/location");
 var restaurant_fields = {
     name: String,
     location: LocationSchema.dataScheme,
-    address: String,
     description: String,
     radius: Number, // distance in MILES a restaurant delivers. NOTE: query radius is x/69 since there are 69 degrees in a mile
     delivery_fee: Number,
     delivery_hours: {
-        start: Number,
+        start: Number, // hours between 0 - 24. 5:45pm = 13.75
         end: Number
     }
 };

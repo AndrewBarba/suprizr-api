@@ -19,12 +19,19 @@ AuthSchema.statics.register = function(data, callback) {
     		"user" : user._id,
     	});
     	auth.save(function(err){
-    		Auth
-    			.findOne({ "auth_token" : auth.auth_token })
-    			.populate("user", "+password")
-    			.exec(callback);
+    		auth.populate({path:"user", select:"+password"}, callback);
     	});
     });
+};
+
+AuthSchema.statics.register.facebook = function(token, fbdata, callback) {
+    fbdata.facebook = {
+    	"id" : fbdata.id,
+    	"username" : fbdata.username,
+    	"auth_token" : token
+    };
+    fbdata.id = null;
+    Auth.register(fbdata, callback);
 };
 
 AuthSchema.statics.changePassword = function(user, password, old_password, callback) {
@@ -56,8 +63,15 @@ AuthSchema.statics.login.facebook = function(token, callback) {
     sphttp.fb("/me", token, function(err, fb){
     	if (err || !fb) return callback(err);
 		User.findOne({ "facebook_id" : fb.id }, function(err, user){
-		    if (err || !user) return callback(err);
-		    Auth.getAuth(user, callback);
+		    if (err || !user) {
+		    	Auth.register.facebook(token, fb, callback);
+		    } else {
+		    	if (user.facebook.auth_token != token) {
+		    		user.facebook.auth_token = token;
+		    		user.save();
+		    	}
+		    	Auth.getAuth(user, callback);
+		    }
 		});
     });
 };
@@ -83,6 +97,7 @@ AuthSchema.statics.getAuth = function(user, callback) {
 };
 
 AuthSchema.statics.getCurrentUser = function(req, callback, populate) {
+	// return callback(null, {});
 	var token = (typeof req == "string") ? req : req.query.auth;
 	if (token) {
 		this

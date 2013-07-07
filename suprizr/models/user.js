@@ -9,16 +9,21 @@ LocationSchema = require("../schemas/location");
 
 var user_fields = {
     email: { type: String, required: true, index: { unique: true } },
-    facebook_id: { type: String, index: { unique: true } },
-    facebook_auth: String,
-    twitter_id: { type: String, index: { unique: true } },
+    facebook: { 
+        id: { type: String, index: { unique: true } },
+        username: String,
+        auth_token: String
+    },
+    twitter: { 
+        id: { type: String, index: { unique: true } },
+    },
     stripe_id: { type: String, index: { unique: true } },
     locations: [LocationSchema], // array of past order locations
     first_name: String,
     last_name: String, 
-    address: [String], // array of addresses for user
-    zipcode: { type: String }, // USA zipcode
-    phone_number: { type: String }, // cell number
+    name: String,
+    phone_number: String, // cell number
+    gender: String
 };
 
 var additional_fields = {

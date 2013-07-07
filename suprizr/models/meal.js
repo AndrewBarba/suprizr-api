@@ -5,6 +5,7 @@ var BaseSchema = require("../schemas/base"),
 
 var meal_fields = {
     name: String,
+    description: String,
     health: Number, // number between 0 - 1 indicating health. 0 = healthy
     restaurant: { type: String, ref: "Restaurant" },
     num_orders: Number, // number of times this meal was ordered

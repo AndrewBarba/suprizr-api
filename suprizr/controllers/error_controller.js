@@ -8,17 +8,17 @@ function ErrorController() {
 
 	this.e400 = function(res, err, text) {
 		if (!text) text = "Something went wrong: ";
-		return res.send(400, { error: text+err });
+		return this.e(400, res, err, text);
 	}
 
 	this.e401 = function(res, err, text) {
 		if (!text) text = "You are not authorized to use this endpoint";
-		return res.send(401, { error: text });
+		return this.e(401, res, err, text);
 	}
 
 	this.e404 = function(res, err, text) {
 		if (!text) text = "We could not find that object: ";
-		return res.send(404, { error: text+err });
+		return this.e(404, res, err, text);
 	}
 
 }

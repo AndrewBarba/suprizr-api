@@ -11,6 +11,10 @@ var restaurant_fields = {
     description: String,
     radius: Number, // distance in MILES a restaurant delivers. NOTE: query radius is x/69 since there are 69 degrees in a mile
     delivery_fee: Number,
+    delivery_hours: {
+        start: Number,
+        end: Number
+    }
 };
 
 var RestaurantSchema = BaseSchema.extend(restaurant_fields);

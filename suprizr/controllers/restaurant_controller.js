@@ -5,6 +5,21 @@ var Restaurant = require("../models/restaurant"),
 
 function RestaurantController() {
 
+	this.getRestaurants = function(req, res, next) {
+		Auth.getCurrentUser(req, function(err, user){
+			if (err || !user) {
+				return Error.e401(res, err);
+			} else {
+				Restaurant.find({}, function(err, docs){
+					if (err || !restaurants) return Error.e400(res, err);
+					return res.json({
+						"restaurants" : docs
+					});
+				});
+			}
+		});
+	}
+
 	this.createRestaurant = function(req, res, next) {
 		Auth.getAdminUser(req, function(err, user){
 			if (err || !user) {
@@ -43,6 +58,7 @@ module.exports = function(app) {
 	
 	var controller = new RestaurantController();
 
+	app.get("/restaurant", controller.getRestaurants);
 	app.post("/restaurant", controller.createRestaurant);
 	app.put("/restaurant/:id", controller.putData);
 

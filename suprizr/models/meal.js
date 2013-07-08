@@ -3,7 +3,7 @@ var BaseSchema = require("../schemas/base"),
         Schema = mongoose.Schema,
         extend = require("mongoose-schema-extend");
 
-var meal_fields = {
+var MealSchema = BaseSchema.extend({
     name: String,
     description: String,
     health: { type: Number, index: true }, // number between 0 - 1 indicating health. 0 = healthy
@@ -11,15 +11,17 @@ var meal_fields = {
     num_orders: Number, // number of times this meal was ordered
     price: Number, // Restaurants meal price
     ingredients: {
-    	gluten_free: Boolean,
-    	dairy_free: Boolean,
-    	peanut_free: Boolean,
-    	meat_free: Boolean
+        gluten_free: Boolean,
+        dairy_free: Boolean,
+        peanut_free: Boolean,
+        meat_free: Boolean
     }
-};
+});
 
-var MealSchema = BaseSchema.extend(meal_fields);
+MealSchema.statics.create = function(data, callback) {
+    var doc = new Meal();
+    doc.putData(data, callback);
+}
 
 var Meal = mongoose.model("Meal", MealSchema);
-Meal.allowed_keys = Object.keys(meal_fields);
 module.exports = Meal;

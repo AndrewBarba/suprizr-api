@@ -174,6 +174,12 @@ SP.extend = function(a,b,f) { // combines second dict into first dict and return
         return b;
     }
 }
+SP.removeKeys = function(data, remove) {
+    SP.each(remove, function(i,k){
+        delete data[k];
+    });
+    return data;
+}
 SP.grep = function(arr,fnc) { // filters an array according to a given function
     var newarr = [];
     SP.each(arr,function(k,v){

@@ -4,17 +4,20 @@ var BaseSchema = require("../schemas/base"),
         extend = require("mongoose-schema-extend");
 
 var status_enum = [ "open", "ordered", "delivered" ];
-var order_fields = {
+
+var OrderSchema = BaseSchema.extend({
     meals: [{ type: String, ref: "Meal" }],
     user: { type: String, ref: "User" },
     order_status: { type: String, enum: status_enum },
     order_details: String,
     feedback: String,
     rating: Number,
-};
+});
 
-var OrderSchema = BaseSchema.extend(order_fields);
+OrderSchema.statics.create = function(data, callback) {
+    var doc = new Order();
+    doc.putData(data, callback);
+}
 
 var Order = mongoose.model("Order", OrderSchema);
-Order.allowed_keys = Object.keys(order_fields);
 module.exports = Order;

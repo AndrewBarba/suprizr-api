@@ -40,10 +40,7 @@ function clean() {
 
 describe("Connect to MongoHQ", function(){
 	it("should connect to our Mongo database hosted on MongoHQ", function(done){
-		mongoose.connect(MONGOHQ_URL, {}, function(err){
-			should.not.exist(err);
-			done();
-		});
+		mongoose.connect(MONGOHQ_URL, {}, done);
 	}); 
 });
 
@@ -114,12 +111,6 @@ describe("Authentication",function(){
 			});
 		});
 	});
-	it("should delete the user and the auth object", function(done){
-		new_user.remove(function(err){
-			should.not.exist(err);
-			new_auth.remove(done);
-		});
-	})
 });
 
 describe("Facebook", function(){
@@ -143,10 +134,7 @@ describe("Facebook", function(){
 			should.exist(auth.user.facebook);
 			auth.user.facebook.auth_token.should.equal(FB_AUTH);
 			fb_user._id.should.equal(auth.user._id);
-			auth.user.remove(function(err){
-				should.not.exist(err);
-				auth.remove(done);
-			});
+			done();
 		});
 	});
 });
@@ -213,12 +201,12 @@ describe("Restaurant", function(){
 				"reference" : "zzz",
 				"location" : [42.345803, -71.087224]
 			},
-			"description" : "An sushi place",
+			"description" : "A sushi place",
 			"radius" : 2,
 			"delivery_fee" : 5.00,
 			"delivery_hours" : {
 				"start" : 10,
-				"end" : 24
+				"end" : 24,
 			}
 		};
 		Restaurant.create(sushi_data, function(err, doc){
@@ -231,17 +219,4 @@ describe("Restaurant", function(){
 		});
 	});
 });
-
-clean();
-
-
-
-
-
-
-
-
-
-
-
 

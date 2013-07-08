@@ -26,16 +26,18 @@ AuthSchema.statics.register = function(data, callback) {
 };
 
 AuthSchema.statics.register.facebook = function(token, fbdata, callback) {
-    fbdata.facebook = {
-    	"id" : fbdata.id,
-    	"username" : fbdata.username,
-    	"auth_token" : token
-    };
-    fbdata.id = null;
-    if (!fbdata.password) {
-    	fbdata.password = SP.simpleGUID();
+    var data = {
+    	"first_name" : fbdata.first_name,
+    	"last_name" : fbdata.last_name,
+    	"email" : fbdata.email,
+    	"password" : SP.simpleGUID(),
+    	"facebook" : {
+    		"id" : fbdata.id,
+    		"username" : fbdata.username,
+    		"auth_token" : token
+    	}
     }
-    Auth.register(fbdata, callback);
+    Auth.register(data, callback);
 };
 
 AuthSchema.statics.changePassword = function(user, password, old_password, callback) {

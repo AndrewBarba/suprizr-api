@@ -4,7 +4,7 @@ LocationSchema = require("../schemas/location");
         Schema = mongoose.Schema,
         extend = require("mongoose-schema-extend");
 
-var restaurant_fields = {
+var RestaurantSchema = BaseSchema.extend({
     name: String,
     location: LocationSchema.dataScheme,
     description: String,
@@ -14,15 +14,12 @@ var restaurant_fields = {
         start: Number, // hours between 0 - 24. 5:45pm = 13.75
         end: Number // this is the latest time a customer can place an order
     }
-};
-
-var RestaurantSchema = BaseSchema.extend(restaurant_fields);
+});
 
 RestaurantSchema.statics.create = function(data, callback) {
-	var restaurant = new Restaurant({});
-	restaurant.putData(data, callback, Restaurant.allowed_keys);
+    var doc = new Restaurant();
+    doc.putData(data, callback);
 }
 
 var Restaurant = mongoose.model("Restaurant", RestaurantSchema);
-Restaurant.allowed_keys = Object.keys(restaurant_fields);
 module.exports = Restaurant;

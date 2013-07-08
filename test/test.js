@@ -26,23 +26,14 @@ var    User = api.model.User,
 
 function clean() {
 	describe("Clean Database", function(){
-		it("should delete all auth records", function(done){
-			Auth.remove({"unit_test" : true}, function(err){
-				should.not.exist(err);
-				done();
-			});
+		it("should delete all test auth records", function(done){
+			Auth.remove({"unit_test" : true}, done);
 		});
 		it("should delete all test users", function(done){
-			User.remove({"unit_test" : true}, function(err){
-				should.not.exist(err);
-				done();
-			});
+			User.remove({"unit_test" : true}, done);
 		});
 		it("should delete all test restaurants", function(done){
-			Restaurant.remove({"unit_test" : true}, function(err){
-				should.not.exist(err);
-				done();
-			});
+			Restaurant.remove({"unit_test" : true}, done);
 		});
 	});
 }

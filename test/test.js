@@ -15,7 +15,7 @@ var should = require("should"),
        api = suprizr(); 
 
 var MONGOHQ_URL = "mongodb://api:0fedf32b14@dharma.mongohq.com:10093/suprizr-dev";
-var FB_AUTH = "CAAF4fmwfZBC0BAM6wFpn3ePka17NYwwtvxJlAg55ZCsEjQhiSxrWs5DDoXlvoF4MGxLgCXlTMH3rmJMSURmRsFCw4mJdJzscZBZCie6iMst2iehdWhMbdZBfSkyjsEmpOWCn4ylZAwsEhV4HzV3ziBCD7d9K4Cz9O9XkxIDDqetQZDZD";
+var FB_AUTH = "CAAEDsytc4r8BAGmJvNJcR56iqMjPYyxqQx9QiZBQBGzEUwcza1XKDvwVt7K5LY8pJYYmBc4OSlqu4BHtaa1os6ZCS9CNvRSeFA040PZB4zZCmPM2bZAJ0vZAtl3bA2dySWvcCNcJiwELkYODOwcQCq9PPXo1pvLr7KuevbkvDDvgZDZD";
 var SP_AUTH = "XXX";
 
 var User = api.model.User,
@@ -32,7 +32,7 @@ describe("Connect to MongoHQ", function(){
 
 describe("Clean Database", function(){
 	it("should delete all test users", function(done){
-		User.remove({}, function(err){
+		User.remove({"first_name" : "Test"}, function(err){
 			should.not.exist(err);
 			done();
 		});
@@ -126,8 +126,8 @@ describe("Facebook", function(){
 			should.exist(auth);
 			should.exist(auth.user.facebook);
 			auth.user.facebook.auth_token.should.equal(FB_AUTH);
-			auth.user.first_name.should.equal("Andrew");
-			auth.user.last_name.should.equal("Barba");
+			auth.user.first_name.should.equal("Test");
+			auth.user.last_name.should.equal("Testing");
 			fb_user = auth.user;
 			done();
 		});
@@ -138,7 +138,7 @@ describe("Facebook", function(){
 			should.exist(auth);
 			should.exist(auth.user.facebook);
 			auth.user.facebook.auth_token.should.equal(FB_AUTH);
-			fb_user.email.should.equal(auth.user.email);
+			fb_user._id.should.equal(auth.user._id);
 			auth.user.remove(function(err){
 				should.not.exist(err);
 				auth.remove(done);

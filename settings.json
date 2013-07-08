@@ -1,7 +1,13 @@
 {
 	"stripe" : {
-		"production" : "pk_live_ziHXYJHEcwG0MEghRpyrNY93",
-		"development" : "pk_test_xBSy6LGd9tiFsKrQzO8gAyR8"
+		"production" : {
+			"key" : "pk_live_ziHXYJHEcwG0MEghRpyrNY93",
+			"secret" : "sk_live_1Pd2kDPJ8SwB71Wfc6axHRE2"
+		},
+		"development" : {
+			"key" : "pk_test_xBSy6LGd9tiFsKrQzO8gAyR8",
+			"secret" : "sk_test_CWaVgrnAT2GJtWLsH1uzL3uX"
+		}
 	},
 	"facebook" : {
 		"app_id" : "285543038247615",

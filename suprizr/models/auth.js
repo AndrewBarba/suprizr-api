@@ -30,7 +30,6 @@ AuthSchema.statics.register.facebook = function(token, fbdata, callback) {
     	"first_name" : fbdata.first_name,
     	"last_name" : fbdata.last_name,
     	"email" : fbdata.email,
-    	"password" : SP.simpleGUID(),
     	"facebook" : {
     		"id" : fbdata.id,
     		"username" : fbdata.username,

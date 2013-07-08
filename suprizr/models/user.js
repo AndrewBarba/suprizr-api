@@ -17,7 +17,16 @@ var UserSchema = BaseSchema.extend({
     twitter: { 
         id: { type: String, index: { unique: true, sparse: true } },
     },
-    stripe_id: { type: String, index: { unique: true, sparse: true } },
+    stripe: { 
+        id: { type: String, index: { unique: true, sparse: true } }, // customer id
+        active_card: {
+            exp_month: Number,
+            exp_year: Number,
+            fingerprint: { type: String, index: true },
+            last4: String,
+            card_type: String
+        }
+    },
     locations: [LocationSchema], // array of past order locations
     first_name: String,
     last_name: String, 
@@ -45,6 +54,7 @@ UserSchema.pre("save", function(next) {
 
 UserSchema.statics.create = function(data, callback) {
     var doc = new User();
+    if (!data["password"]) data["password"] = SP.simpleGUID();
     doc.putData(data, callback);
 }
 

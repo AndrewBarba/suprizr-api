@@ -22,7 +22,11 @@ var SP_AUTH = "XXX";
 
 var    User = api.model.User,
  Restaurant = api.model.Restaurant,
-	   Auth = api.model.Auth;
+       Meal = api.model.Meal,
+      Order = api.model.Order,
+	   Auth = api.model.Auth,
+	 Stripe = api.module.Stripe,
+	Request = api.module.Request;
 
 function clean() {
 	describe("Clean Database", function(){
@@ -34,6 +38,12 @@ function clean() {
 		});
 		it("should delete all test restaurants", function(done){
 			Restaurant.remove({"unit_test" : true}, done);
+		});
+		it("should delete all test meals", function(done){
+			Meal.remove({"unit_test" : true}, done);
+		});
+		it("should delete all test orders", function(done){
+			Order.remove({"unit_test" : true}, done);
 		});
 	});
 }
@@ -219,6 +229,98 @@ describe("Restaurant", function(){
 		});
 	});
 });
+
+describe("Stripe", function(){
+	
+	var user1 = false;
+	var user2 = false;
+	var token1 = false;
+	var token_data = {
+		"card" : {
+			"number" : "4242424242424242",
+			"exp_month" : "1",
+			"exp_year" : "2015",
+			"name" : "Test User"
+		}
+	};
+
+	it("should create a token", function(done){
+		Stripe.api.token.create(token_data, function(err, tok){
+			should.not.exist(err);
+			should.exist(tok);
+			token = tok;
+			done();
+		});
+	});
+
+	it("should create a new user via stripe token", function(done){
+		Stripe.createUser(token.id, function(err, user){
+			should.not.exist(err);
+			should.exist(user);
+			user1 = user;
+			done();
+		});
+	});
+
+	it("should link to existing user since credit data is the same", function(done){
+		Stripe.api.token.create(token_data, function(err, tok){
+			Stripe.createUser(token.id, function(err, user){
+				should.not.exist(err);
+				should.exist(user);
+				user._id.should.equal(user1._id);
+				done();
+			});
+		});
+	});
+
+	it("should add stripe data to a user", function(done){
+		User.create({first_name:"Test"}, function(err, user){
+			should.not.exist(err);
+			should.exist(user);
+			Stripe.api.token.create(token_data, function(err, tok){
+				Stripe.putUser(user, tok.id, function(err, user){
+					should.not.exist(err);
+					should.exist(user);
+					user.stripe.active_card.last4.should.equal("4242");
+					user2 = user;
+					done();
+				});
+			});
+		});
+	});
+
+	it("should charge an existing user", function(done){
+		Stripe.chargeUser(user2, 20.00, function(err, charge){
+			should.not.exist(err);
+			should.exist(charge);
+			charge.customer.should.equal(user2.stripe.id);
+			charge.amount.should.equal(2000);
+			done();
+		});
+	});
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 clean();
 

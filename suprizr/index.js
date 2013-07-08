@@ -10,10 +10,8 @@ function Suprizr(app) {
 		this.controller = controller(app);
 	}
 
-    // Load Stripe
-    var stripe_key = SP_SETTINGS.stripe[SP_ENV];
-    if (!stripe_key || !stripe_key.length) stripe_key = SP_SETTINGS.stripe.development;
-    this.stripe = require("stripe")(stripe_key);
+    // Load Modules
+    this.module = require("./modules");
 }
 
 var _suprizr = false;

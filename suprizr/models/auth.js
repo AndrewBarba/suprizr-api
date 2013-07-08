@@ -71,9 +71,12 @@ AuthSchema.statics.login.facebook = function(token, callback) {
 		    } else {
 		    	if (user.facebook.auth_token != token) {
 		    		user.facebook.auth_token = token;
-		    		user.save();
+		    		user.save(function(err){
+		    			Auth.getAuth(user, callback);
+		    		});
+		    	} else {
+		    		Auth.getAuth(user, callback);
 		    	}
-		    	Auth.getAuth(user, callback);
 		    }
 		});
     });

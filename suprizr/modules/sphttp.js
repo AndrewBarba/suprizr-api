@@ -44,7 +44,16 @@ function SPHTTP(proto) {
 			"host" : "graph.facebook.com",
 			"path" : path
 		}
-		this.json(options, callback);
+		this.json(options, function(err, data){
+			if (err || !data || data.error) {
+				if (data && data.error) {
+					err.facebook = data.error;
+				}
+				return callback(err);
+			} else {
+				return callback(null, data);
+			}
+		});
 	}
 }
 

@@ -6,6 +6,7 @@
 SP_SETTINGS = require("../settings");
 SP_ENV = "development";
 SP_PROD = SP_ENV == "production";
+SP_UNIT_TEST = true; // set unit testing to true
 trace = console.log;
 
 var should = require("should"), 
@@ -23,6 +24,29 @@ var    User = api.model.User,
  Restaurant = api.model.Restaurant,
 	   Auth = api.model.Auth;
 
+function clean() {
+	describe("Clean Database", function(){
+		it("should delete all auth records", function(done){
+			Auth.remove({"unit_test" : true}, function(err){
+				should.not.exist(err);
+				done();
+			});
+		});
+		it("should delete all test users", function(done){
+			User.remove({"unit_test" : true}, function(err){
+				should.not.exist(err);
+				done();
+			});
+		});
+		it("should delete all test restaurants", function(done){
+			Restaurant.remove({"unit_test" : true}, function(err){
+				should.not.exist(err);
+				done();
+			});
+		});
+	});
+}
+
 describe("Connect to MongoHQ", function(){
 	it("should connect to our Mongo database hosted on MongoHQ", function(done){
 		mongoose.connect(MONGOHQ_URL, {}, function(err){
@@ -32,20 +56,7 @@ describe("Connect to MongoHQ", function(){
 	}); 
 });
 
-describe("Clean Database", function(){
-	it("should delete all test users", function(done){
-		User.remove({"first_name" : "Test"}, function(err){
-			should.not.exist(err);
-			done();
-		});
-	});
-	it("should delete all test restaurants", function(done){
-		Restaurant.remove({"name" : /Test/}, function(err){
-			should.not.exist(err);
-			done();
-		});
-	});
-});
+clean();
 
 describe("Authentication",function(){
 	var email = "test+"+SP.s4()+"@test.com"; var password = "123456789";
@@ -230,7 +241,7 @@ describe("Restaurant", function(){
 	});
 });
 
-
+clean();
 
 
 

@@ -7,6 +7,7 @@
 SP_SETTINGS = require("./settings");
 SP_ENV = process.env.NODE_ENV;
 SP_PROD = SP_ENV == "production";
+SP_UNIT_TEST = false; // turn off unit testing mode
 
 // custom logging function
 trace = function(a, force) {

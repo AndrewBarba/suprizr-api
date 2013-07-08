@@ -7,6 +7,10 @@ var data = {
     created_at: { type: Number, default: Date.now },
 };
 
+if (SP_UNIT_TEST) {
+    data["unit_test"] = { type: Boolean, default: true };
+}
+
 var BaseSchema = new mongoose.Schema(data);
 
 BaseSchema.pre("save", function(next) {

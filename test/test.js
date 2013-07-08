@@ -15,11 +15,12 @@ var should = require("should"),
        api = suprizr(); 
 
 var MONGOHQ_URL = "mongodb://api:0fedf32b14@dharma.mongohq.com:10093/suprizr-dev";
-var FB_AUTH = "CAAEDsytc4r8BAGmJvNJcR56iqMjPYyxqQx9QiZBQBGzEUwcza1XKDvwVt7K5LY8pJYYmBc4OSlqu4BHtaa1os6ZCS9CNvRSeFA040PZB4zZCmPM2bZAJ0vZAtl3bA2dySWvcCNcJiwELkYODOwcQCq9PPXo1pvLr7KuevbkvDDvgZDZD";
+var FB_AUTH = "CAAEDsytc4r8BAH7sVOuntIwPov2YsjuNedfOlpgfn1GHjjZAM8EGCYZAm8S151FU8OaDQAr9tcvOHbXSRPMS66dKZBcBECQ3OJL9eB9hkxiwee9ZCOAvZB9YtnDvDl6aPFZCZBw6rVofRH3Q9gZBCaZA93xbAxJi1GqoZD";
 var SP_AUTH = "XXX";
 
-var User = api.model.User,
-	Auth = api.model.Auth;
+var    User = api.model.User,
+ Restaurant = api.model.Restaurant,
+	   Auth = api.model.Auth;
 
 describe("Connect to MongoHQ", function(){
 	it("should connect to our Mongo database hosted on MongoHQ", function(done){
@@ -37,8 +38,8 @@ describe("Clean Database", function(){
 			done();
 		});
 	});
-	it("should delete all test auths", function(done){
-		Auth.remove({}, function(err){
+	it("should delete all test restaurants", function(done){
+		Restaurant.remove({"name" : /Test/}, function(err){
 			should.not.exist(err);
 			done();
 		});
@@ -127,7 +128,7 @@ describe("Facebook", function(){
 			should.exist(auth.user.facebook);
 			auth.user.facebook.auth_token.should.equal(FB_AUTH);
 			auth.user.first_name.should.equal("Test");
-			auth.user.last_name.should.equal("Testing");
+			auth.user.last_name.should.equal("Suprizr");
 			fb_user = auth.user;
 			done();
 		});
@@ -144,6 +145,12 @@ describe("Facebook", function(){
 				auth.remove(done);
 			});
 		});
+	});
+});
+
+describe("Restaurant", function(){
+	it("should create a restaurant", function(done){
+		done();
 	});
 });
 

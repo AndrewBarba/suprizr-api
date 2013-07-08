@@ -36,6 +36,23 @@ function RestaurantController() {
 		})
 	};
 
+	this.getById = function(req, res, next) {
+		Auth.getCurrentUser(req, function(){
+			if (err || !user) {
+				res.send(401, { error : "Access denied" });
+			} else {
+				var id = req.param.id;
+				Restaurant.findById(id, function(err, doc){
+					if (err || !doc) {
+						return Error.e404(res, err, "Could not find restaurant with id "+id);
+					} else {
+						return res.json(doc);
+					}
+				});
+			}
+		})
+	};
+
 	this.putData = function(req, res, next) {
 		var id = req.query.id;
 		Auth.getCurrentUser(req, function(err, user){
@@ -59,6 +76,7 @@ module.exports = function(app) {
 	var controller = new RestaurantController();
 
 	app.get("/restaurant", controller.getRestaurants);
+	app.get("/restaurant/:id", controller.getRestaurants);
 	app.post("/restaurant", controller.createRestaurant);
 	app.put("/restaurant/:id", controller.putData);
 

@@ -7,14 +7,14 @@ var MealSchema = BaseSchema.extend({
     name: String,
     description: String,
     health: { type: Number, index: true }, // number between 0 - 1 indicating health. 0 = healthy
-    restaurant: { type: String, ref: "Restaurant" },
+    restaurant: { type: String, ref: "Restaurant", index: true },
     num_orders: Number, // number of times this meal was ordered
     price: Number, // Restaurants meal price
     ingredients: {
-        gluten_free: Boolean,
-        dairy_free: Boolean,
-        peanut_free: Boolean,
-        meat_free: Boolean
+        gluten_free: { type: Boolean, index: true },
+        dairy_free: { type: Boolean, index: true },
+        peanut_free: { type: Boolean, index: true },
+        meat_free: { type: Boolean, index: true }
     }
 });
 

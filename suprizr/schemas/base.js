@@ -35,5 +35,21 @@ BaseSchema.statics.putData = function(id, data, callback, valid_keys) {
     this.findByIdAndUpdate(id, valid_data, callback);
 };
 
+BaseSchema.methods.putData = function(data, callback, valid_keys) {
+    var self = this;
+    if (valid_keys) {
+        SP.each(valid_keys, function(i,key){
+            var val = data[key];
+            if (val) {
+                self[key] = val;
+            }
+        });
+        self.save(callback);
+    } else {
+        callback({"error":"need a set of valid keys"});
+    }
+};
+
 BaseSchema.dataScheme = data;
+BaseSchema.set("autoIndex", !SP_PROD);
 module.exports = BaseSchema;

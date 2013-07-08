@@ -5,6 +5,7 @@
 // Globals
 SP_SETTINGS = require("../settings");
 SP_ENV = "development";
+SP_PROD = SP_ENV == "production";
 trace = console.log;
 
 var should = require("should"), 
@@ -149,8 +150,83 @@ describe("Facebook", function(){
 });
 
 describe("Restaurant", function(){
-	it("should create a restaurant", function(done){
-		done();
+	var supreme = false;
+	var boloco = false;
+	var sushi = false;
+	it("should create supreme pizza", function(done){
+		var supreme_data = {
+			"name" : "Test Supreme Pizza",
+			"location" : {
+				"formatted_address" : "177 Massachusetts Avenue, Boston, MA, United States",
+				"reference" : "xxx",
+				"location" : [42.345803, -71.087224]
+			},
+			"description" : "An awesome pizza place",
+			"radius" : 2,
+			"delivery_fee" : 5.00,
+			"delivery_hours" : {
+				"start" : 10,
+				"end" : 24
+			}
+		};
+		Restaurant.create(supreme_data, function(err, doc){
+			should.not.exist(err);
+			should.exist(doc);
+			doc.name.should.equal("Test Supreme Pizza");
+			doc.location.reference.should.equal("xxx");
+			supreme = doc;
+			done();
+		});
+	});
+	it("should create boloco", function(done){
+		var boloco_data = {
+			"name" : "Test Boloco",
+			"location" : {
+				"formatted_address" : "177 Massachusetts Avenue, Boston, MA, United States",
+				"reference" : "yyy",
+				"location" : [42.345803, -71.087224]
+			},
+			"description" : "An burrito place",
+			"radius" : 2,
+			"delivery_fee" : 5.00,
+			"delivery_hours" : {
+				"start" : 10,
+				"end" : 24
+			}
+		};
+		Restaurant.create(boloco_data, function(err, doc){
+			should.not.exist(err);
+			should.exist(doc);
+			doc.name.should.equal("Test Boloco");
+			doc.location.reference.should.equal("yyy");
+			boloco = doc;
+			done();
+		});
+	});
+	it("should create sushi", function(done){
+		var sushi_data = {
+			"name" : "Test Symphony Sushi",
+			"location" : {
+				"formatted_address" : "177 Massachusetts Avenue, Boston, MA, United States",
+				"reference" : "zzz",
+				"location" : [42.345803, -71.087224]
+			},
+			"description" : "An sushi place",
+			"radius" : 2,
+			"delivery_fee" : 5.00,
+			"delivery_hours" : {
+				"start" : 10,
+				"end" : 24
+			}
+		};
+		Restaurant.create(sushi_data, function(err, doc){
+			should.not.exist(err);
+			should.exist(doc);
+			doc.name.should.equal("Test Symphony Sushi");
+			doc.location.reference.should.equal("zzz");
+			sushi = doc;
+			done();
+		});
 	});
 });
 

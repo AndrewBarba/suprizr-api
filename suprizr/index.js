@@ -33,9 +33,10 @@ SP.guid = function(del){ // guid generator
 	if (!del) del = "-";
 	return(SP.s4()+SP.s4()+del+SP.s4()+del+"4"+SP.s4().substr(0,3)+del+SP.s4()+del+SP.s4()+SP.s4()+SP.s4());
 }
-SP.simpleGUID = function() {
-	var s = "";
-	for (var i = 0; i < 8; i++) s += SP.s4();
+SP.simpleGUID = function(x) {
+	if (!x) x = 1;
+    var s = "";
+	for (var i = 0; i < 8*x; i++) s += SP.s4();
 	return s;
 }
 SP.now = function() {

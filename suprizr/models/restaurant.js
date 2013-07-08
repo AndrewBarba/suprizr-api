@@ -12,7 +12,7 @@ var restaurant_fields = {
     delivery_fee: Number,
     delivery_hours: {
         start: Number, // hours between 0 - 24. 5:45pm = 13.75
-        end: Number
+        end: Number // this is the latest time a customer can place an order
     }
 };
 

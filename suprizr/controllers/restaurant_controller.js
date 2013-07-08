@@ -25,11 +25,11 @@ function RestaurantController() {
 			if (err || !user) {
 				return Error.e401(res, err);
 			} else {
-				Restaurant.create(req.body, function(err, rest){
-					if (err || !rest) {
+				Restaurant.create(req.body, function(err, doc){
+					if (err || !doc) {
 						return Error.e400(res, err);
 					} else {
-						return res.json(rest);
+						return res.json(doc);
 					}
 				});
 			}

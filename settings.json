@@ -8,6 +8,7 @@
 		"secret" : "9f61d884e3c14214805c84ef5009fbab"
 	},
 	"google" : {
-		"api_key" : "AIzaSyADEwRuwXbsqJM-35XXVAkBfXhYVsUgFi4"
+		"api_key" : "AIzaSyADEwRuwXbsqJM-35XXVAkBfXhYVsUgFi4",
+		"sample_search_url" : "https://maps.googleapis.com/maps/api/place/textsearch/json?query=supreme%20pizza,%20boston&sensor=false&key=AIzaSyADEwRuwXbsqJM-35XXVAkBfXhYVsUgFi4"
 	}
 }

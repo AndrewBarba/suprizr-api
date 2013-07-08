@@ -3,9 +3,10 @@
  ** 2013 Suprizr Inc.
  **/
 
-// Globals
+// Globals (Note: copy these to unit tests test.js)
 SP_SETTINGS = require("./settings");
 SP_ENV = process.env.NODE_ENV;
+SP_PROD = SP_ENV == "production";
 
 // custom logging function
 trace = function(a, force) {

@@ -3,7 +3,7 @@ var mongoose = require("mongoose");
 
 var data = {
 	"formatted_addres" : String,
-	"google_id" : String,
+	"reference" : String, // Google reference to lookup more info
 	"location" : { type: [Number], index: { "loc" : "2d" } }
 };
 

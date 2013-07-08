@@ -7,7 +7,7 @@ var BaseSchema = require("../schemas/base"),
           User = require("./user");
 
 var AuthSchema = BaseSchema.extend({
-    auth_token : { type: String, default: SP.guid, required: true, index: { unique: true } },
+    auth_token : { type: String, default: SP.simpleGUID, required: true, index: { unique: true } },
     user       : { type: String, ref: "User", required: true, index : true },
     valid      : { type: Boolean, default: true },
 });
@@ -17,6 +17,7 @@ AuthSchema.statics.register = function(data, callback) {
     	if (err || !user) return callback(err);
     	var auth = new Auth({
     		"user" : user._id,
+    		"auth_token" : SP.simpleGUID(2),
     	});
     	auth.save(function(err){
     		auth.populate({path:"user", select:"+password"}, callback);

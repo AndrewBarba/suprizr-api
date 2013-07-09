@@ -24,7 +24,7 @@ Returns the status of the API servers. Should return:
 		"status" : "OK"
 	}
 
-If all servers are up and running and connected to MongoHQ
+if all servers are up and running and connected to MongoHQ
 
 - - -
 
@@ -133,8 +133,6 @@ Updates an order with a status and description
 
 #### DELETE (auth-admin) /order/:id
 Cancels an order if it has not yet beeen ordered or refunds the order if it has been ordered
-
-app.put("/order/:id", controller.updateOrder);
 
 
 - - -

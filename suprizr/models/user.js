@@ -1,8 +1,8 @@
 
 var BaseSchema = require("../schemas/base"),
-LocationSchema = require("../schemas/location");
+LocationSchema = require("../schemas/location"),
       mongoose = require("mongoose"),
-        extend = require("mongoose-schema-extend");
+        extend = require("mongoose-schema-extend"),
         bcrypt = require("bcrypt"),
         sphttp = require("../modules/sphttp"),
         SALT_WORK_FACTOR = process.env.SALT_WORK_FACTOR || 10;
@@ -55,7 +55,7 @@ UserSchema.pre("save", function(next) {
 UserSchema.statics.create = function(data, callback) {
     var doc = new User();
     if (!data["password"]) data["password"] = SP.simpleGUID();
-    doc.putData(data, callback);
+    doc.putData(data, callback, ["admin", "restaurant"]);
 }
 
 UserSchema.methods.validatePassword = function(password, callback) {

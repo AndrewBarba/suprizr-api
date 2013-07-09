@@ -1,4 +1,8 @@
 
+/**
+ * This is a custom http request wrapper around nodes built in request object
+ */
+
 var http = require("http"),
    https = require("https");
 

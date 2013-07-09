@@ -206,7 +206,7 @@ describe("Restaurant", function(){
 	it("should create sushi", function(done){
 		var sushi_data = {
 			"name" : "Test Symphony Sushi",
-			"location" : {
+			"address" : {
 				"formatted_address" : "177 Massachusetts Avenue, Boston, MA, United States",
 				"reference" : "zzz",
 				"location" : [42.345803, -71.087224]
@@ -228,6 +228,16 @@ describe("Restaurant", function(){
 			done();
 		});
 	});
+
+	it("should find restaurants near a point", function(done){
+		Restaurant.findNearBy([42.345803, -71.087224], function(err, docs, rids){
+			should.not.exist(err);
+			should.exist(docs);
+			should.exist(rids);
+			trace(rids);
+			done();
+		});
+	})
 });
 
 describe("Stripe", function(){
@@ -290,11 +300,11 @@ describe("Stripe", function(){
 	});
 
 	it("should charge an existing user", function(done){
-		Stripe.chargeUser(user2, 20.00, function(err, charge){
+		Stripe.chargeUser(user2, 20.00, function(err, charge){ // amount in dollars
 			should.not.exist(err);
 			should.exist(charge);
 			charge.customer.should.equal(user2.stripe.id);
-			charge.amount.should.equal(2000);
+			charge.amount.should.equal(2000); // amount in cents
 			done();
 		});
 	});
@@ -323,4 +333,3 @@ describe("Stripe", function(){
 
 
 clean();
-

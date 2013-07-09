@@ -32,7 +32,7 @@ BaseSchema.statics.putData = function(id, data, callback, restricted_keys) {
 
 BaseSchema.methods.putData = function(data, callback, restricted_keys) {
     if (!restricted_keys) restricted_keys = [];
-    restricted_keys.concat("_id","created_at","updated_at");
+    restricted_keys.concat(BaseSchema.restricted_fields);
     SP.removeKeys(data, restricted_keys);
     SP.extend(this, data, true);
     this.save(callback);

@@ -9,6 +9,7 @@ function StripeModule() {
 	/**
 	 * Creates a new user from a stripe card token
 	 * or returns an existing user based on card fingerprint
+	 * Note: this should only be called if a user places an order without an auth_token (not an existing Suprizr user)
 	 */
 	this.createUser = function(token_id, callback) {
 		// fetch the token

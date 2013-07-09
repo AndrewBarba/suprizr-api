@@ -45,7 +45,7 @@ function UserController() {
 					} else {
 						return res.json(user);
 					}
-				}, User.allowed_keys);
+				}, ["admin", "password", "restaurant"]); // restrict these keys
 			}
 		});
 	}

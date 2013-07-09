@@ -3,7 +3,7 @@
  ** 2013 Suprizr Inc.
  **/
 
-// Globals (Note: copy these to unit tests test.js)
+// Globals (Note: these globals must exist in /test/test.js)
 SP_SETTINGS = require("./settings");
 SP_ENV = process.env.NODE_ENV;
 SP_PROD = SP_ENV == "production";
@@ -11,7 +11,7 @@ SP_UNIT_TEST = false; // turn off unit testing mode
 
 // custom logging function
 trace = function(a, force) {
-	if (SP_ENV != "production" || force) {
+	if (!SP_PROD || force) {
 		return console.log(a);
 	}
 	return false;
@@ -57,7 +57,7 @@ mongoose.connect(process.env.MONGOHQ_URL, options, function(err){
 	if (!err) {
 		trace("Connected to MongoHQ");
 	} else {
-		throw "Failed to conntent to MongoHQ!";
+		throw "Failed to connect to MongoHQ!";
 	}
 });
 

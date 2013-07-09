@@ -113,7 +113,7 @@ Endpoint for interacting with Order objects
 Returns a list of open orders
 
 #### GET (auth) /order/:id
-Gets and order by the provided id
+Gets an order by the provided id
 
 #### PUT /order/:id/complete
 Completes an order by setting the status to 'ordered' and charges the users credit card
@@ -123,7 +123,7 @@ Completes an order by setting the status to 'ordered' and charges the users cred
 		"delivery_time" : 18.75 // this means the order will be deliverd ~ 6:45pm (NOTE: .75 is not a mistake, it is a fraction of an hour)
 	}
 
-#### PUT /order/:id
+#### PUT (auth-admin) /order/:id
 Updates an order with a status and description
 
 	sample_post_body = {

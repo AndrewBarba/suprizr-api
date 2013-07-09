@@ -25,15 +25,17 @@ var OrderSchema = BaseSchema.extend({
     stripe_charge_id: String,
 });
 
-OrderSchema.statics.supriz = function(user_id, data, callback) {
+OrderSchema.statics.supriz = function(user, data, callback) {
     var doc = new Order();
 
     var order_data = {
-        "user" : user_id,
+        "user" : user._id,
         "email" : data.email,
         "phone_number" : data.phone_number,
         "delivery_address" : data.delivery_address,
     };
+
+    user.addAddress(data.delivery_address);
 
     Restaurant.supriz(data.delivery_address.location, function(err, docs, rids){
         if (err) return callback(err);
@@ -66,9 +68,10 @@ OrderSchema.statics.chargeOrder = function(id, description, delivery_time, callb
                     "expected_delivery" : delivery_time
                 };
 
-                var meal = order.meals[0];
-                meal.num_orders = meal.num_orders + 1;
-                meal.save(); 
+                SP.each(order.meals, function(){
+                    this.num_orders++;
+                    this.save();
+                });
 
                 order.save(function(err){
                     callback(err, order);

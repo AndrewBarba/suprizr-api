@@ -442,7 +442,7 @@ describe("Supriz", function(){
 				"location" : [42.345803, -71.087224]
 			}
 		};
-		Order.supriz(stripe_users[0]._id, data, function(err, order){
+		Order.supriz(stripe_users[0], data, function(err, order){
 			should.not.exist(err);
 			should.exist(order);
 			orders.push(order);
@@ -480,4 +480,4 @@ describe("Supriz", function(){
 
 
 
-clean();
+// clean();

@@ -27,7 +27,7 @@ var UserSchema = BaseSchema.extend({
             card_type: String
         }
     },
-    locations: [LocationSchema], // array of past order locations
+    locations: { type: [LocationSchema], default: [] }, // array of past order locations
     first_name: String,
     last_name: String, 
     name: String,
@@ -66,6 +66,24 @@ UserSchema.pre("save", function(next) {
  */ 
 UserSchema.methods.validatePassword = function(password, callback) {
     bcrypt.compare(password, this.password, callback);
+};
+
+/**
+ * Adds a delivery address to the users list of past addresses
+ */
+UserSchema.methods.addAddress = function(address, callback) {
+    var exists = false;
+    SP.each(this.locations, function(i, loc){
+        if (loc.location[0] == address.location[0] && loc.location[1] == address.location[1]) {
+            exists = true;
+        }
+    });
+    if (!exists) {
+        this.locations.push(address);
+        this.save(callback);
+    } else {
+        callback(null, user);
+    }
 };
 
 UserSchema.methods.connect = function(){};

@@ -157,9 +157,16 @@ SP.trackTime = function(date) { // prints/returns time difference (seconds) betw
     return seconds;
 }
 SP.each = function(arr,fnc) { // a simple for-each implementation
-    for (var k in arr) {
-        var obj = arr[k];
-        fnc.call(obj,k,obj);
+    if (arr instanceof Array) {
+        for (var i = 0; i < arr.length; i++) {
+            var obj = arr[i];
+            fnc.call(obj,i,obj);
+        }
+    } else {
+        for (var k in arr) {
+            var obj = arr[k];
+            fnc.call(obj,k,obj);
+        }
     }
 }
 SP.extend = function(a,b,f) { // combines second dict into first dict and returns it. if third param is true, b keys overright a keys

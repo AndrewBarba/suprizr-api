@@ -142,10 +142,7 @@ AuthSchema.statics.getAuth = function(user, callback) {
 			if (!auth.valid) {
 				auth.valid = true;
 				auth.auth_token = SP.guid();
-				auth.save(function(err){
-					if (err) return callback(err);
-					callback(null, auth);
-				});
+				auth.save(callback);
 			} else {
 				callback(null, auth);
 			}

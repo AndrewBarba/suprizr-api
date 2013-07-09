@@ -73,9 +73,7 @@ OrderSchema.statics.completeOrder = function(id, description, delivery_time, cal
                     this.save();
                 });
 
-                order.save(function(err){
-                    callback(err, order);
-                });
+                order.save(callback);
             });
         });
 }
@@ -90,15 +88,11 @@ OrderSchema.statics.cancelOrder = function(id, callback) {
                 Stripe.refundCharge(order.stripe_charge_id, function(err, charge){
                     if (err || !charge) return callback(err);
                     order.order_status = "refunded";
-                    order.save(function(err){
-                        callback(err, order);
-                    });
+                    order.save(callback);
                 });
             } else {
                 order.order_status = "canceled";
-                order.save(function(err){
-                    callback(err, order);
-                });
+                order.save(callback);
             }
         });
 }

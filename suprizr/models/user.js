@@ -104,10 +104,7 @@ UserSchema.methods.connectFacebook = function(fb_auth, callback) {
             "username" : fbdata.username,
             "auth_token" : fb_auth
         };
-        user.save(function(err){
-            if (err) return callback(err);
-            return callback(null, user);
-        });
+        user.save(callback);
     });
 };
 

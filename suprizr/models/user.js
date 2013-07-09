@@ -94,7 +94,7 @@ UserSchema.methods.connect = function(){};
 UserSchema.methods.connect.facebook = function(fb_auth, callback) {
     var user = this;
     sphttp.fb("/me", fb_auth, function(err, fbdata){
-        if (err || !fb) return callback(err);
+        if (err || !fbdata) return callback(err);
         user.facebook = {
             "id" : fbdata.id,
             "username" : fbdata.username,

@@ -1,5 +1,6 @@
 
-var User = require("../models/user");
+var User = require("../models/user"),
+    Auth = require("../models/auth");
 
 function StripeModule() {
 
@@ -18,7 +19,10 @@ function StripeModule() {
 			// lookup a user by the card fingerprint
 			User.findOne({ "stripe.active_card.fingerprint" : token.card.fingerprint }, function(err, user){
 				if (user) {
-					return callback(null, user);
+					Auth.getAuth(user, function(err, auth){
+						if (err || !auth) return callback(err);
+						return callback(null, auth.user, auth);
+					});
 				} else {
 					Stripe.api.customers.create({ "card" : token.id }, function(err, customer){
 						if (err || !customer) return callback(err);
@@ -36,7 +40,10 @@ function StripeModule() {
 						};
 						User.create(user_data, function(err, user){
 							if (err || !user) return callback(err);
-							callback(null, user);
+							Auth.create(user, function(err, auth){
+								if (err || !auth) return callback(err);
+								callback(null, auth.user, auth);
+							});
 						});
 					});
 				}

@@ -76,6 +76,7 @@ module.exports = function(app) {
 	app.post("/auth/register", controller.register); // registers a new user
 	app.post("/auth/login", controller.login); // logs in a user via email and password
 	app.post("/auth/facebook", controller.login.facebook); // logs in / registers / connects a user via Facebook
+	app.post("/auth/stripe", controller.login.facebook);
 	app.put("/auth/password", controller.changePassword); // changes a users password
 
 	return controller;

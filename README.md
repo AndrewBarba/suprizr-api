@@ -78,7 +78,7 @@ Changes the current users password
 Orders a Supriz meal for the current user. The users credit card will not be charged until an admin completes an order. See /order for more details.
 
 #### POST /supriz
-Creates a new supriz meal. NOTE, there is current only support for 1 meal but I'm leaving the syntax as an array of meals for down the road.
+Creates a new supriz meal. There is currently only support for 1 meal but I'm leaving the syntax as an array of meals for down the road. If no auth token is provided an extra key will be returned called 'auth'. This contains auth info for the user that was just created. You should keep the returnd auth_token and include it on all requests from this point forward. With that auth token we can now link the account to Facebook or get them to register via email and password. If for some reason the auth token is lost but the user comes back and uses the same credit card, then we will still return that same user based on a credit card hash.
 
 	sample_post_body = {
 		"meals" : [

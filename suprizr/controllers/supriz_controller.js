@@ -10,21 +10,24 @@ function SuprizController() {
 	this.suprizMe = function(req, res, next) {
 		Auth.getCurrentUser(req, function(err, current){
 			var stripe_token = req.body.stripe_token;
+
 			if (current) {
 				Stripe.putUser(current, stripe_token, function(err, user){
 					if (err || !user) return Error.e400(res, err, "Failed to add stripe data to user");
-					Order.create(user._id, req.body, create);
+					Order.create(user._id, req.body, function(err, order){
+						if (err || !order) return Error.e400(res, err, "Failed to create order");
+						return res.json(order);
+					});
 				});
 			} else {
-				Stripe.createUser(stripe_token, function(err, user){
-					if (err || !user) return Error.e400(res, err, "Failed create a user from stripe token");
-					Order.create(user._id, req.body, create);
+				Stripe.createUser(stripe_token, function(err, user, auth){
+					if (err || !auth) return Error.e400(res, err, "Failed to create a user from stripe token");
+					Order.create(user._id, req.body, function(err, order){
+						if (err || !order) return Error.e400(res, err, "Failed to create order");
+						order.auth = auth;
+						res.json(auth);
+					});
 				});
-			}
-
-			var create = function(err, order) {
-				if (err || !order) return Error.e400(res, err, "Failed to create order");
-				res.json(order);
 			}
 		});
 	};

@@ -184,5 +184,5 @@ SP.grep = function(arr,fnc) { // filters an array according to a given function
         var pass = fnc.call(v,v,k);
         if (pass) newarr.push(v);
     });
-    return newar
+    return newarr;
 }

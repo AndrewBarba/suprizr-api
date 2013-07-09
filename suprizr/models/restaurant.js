@@ -25,7 +25,7 @@ RestaurantSchema.statics.create = function(data, callback) {
 RestaurantSchema.statics.findNearBy = function(location, callback) {
     var restaurant_query = {
         "address.location" : {
-            "$geoWithin" : { "$center" : [ location, (10/69) ] }
+            "$within" : { "$center" : [ location, (10/69) ] } // TODO: upgrade this to $geoWithin
         }
     };
     Restaurant.find(restaurant_query, function(err, docs){

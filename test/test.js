@@ -186,7 +186,7 @@ describe("Restaurant", function(){
 				"reference" : "yyy",
 				"location" : [42.345803, -71.087224]
 			},
-			"description" : "An burrito place",
+			"description" : "A burrito place",
 			"radius" : 2,
 			"delivery_fee" : 5.00,
 			"delivery_hours" : {
@@ -209,7 +209,7 @@ describe("Restaurant", function(){
 			"address" : {
 				"formatted_address" : "177 Massachusetts Avenue, Boston, MA, United States",
 				"reference" : "zzz",
-				"location" : [42.345803, -71.087224]
+				"location" : [42.345803, -74.087224]
 			},
 			"description" : "A sushi place",
 			"radius" : 2,

@@ -135,7 +135,6 @@ describe("Facebook", function(){
 			auth.user.first_name.should.equal("Test");
 			auth.user.last_name.should.equal("Suprizr");
 			fb_user = auth.user;
-			users.push(fb_user);
 			done();
 		});
 	});
@@ -146,9 +145,17 @@ describe("Facebook", function(){
 			should.exist(auth.user.facebook);
 			auth.user.facebook.auth_token.should.equal(FB_AUTH);
 			fb_user._id.should.equal(auth.user._id);
-			done();
+			fb_user.remove(done);
 		});
 	});
+	it("should link an existing user to facebook", function(done){
+		user = users[0];
+		user.connectFacebook(FB_AUTH, function(err, user){
+			should.not.exist(err);
+			should.exist(user);
+			done();
+		});
+	})
 });
 
 var restaurants = [];

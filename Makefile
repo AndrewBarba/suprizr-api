@@ -11,3 +11,6 @@ prod:
 
 tests:
 	mocha --timeout 120000
+
+logs:
+	heroku logs --tail --account suprizr-api

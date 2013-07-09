@@ -86,12 +86,10 @@ UserSchema.methods.addAddress = function(address, callback) {
     }
 };
 
-UserSchema.methods.connect = function(){};
-
 /**
  * Connects an existing (this) user to Facebook
  */
-UserSchema.methods.connect.facebook = function(fb_auth, callback) {
+UserSchema.methods.connectFacebook = function(fb_auth, callback) {
     var user = this;
     sphttp.fb("/me", fb_auth, function(err, fbdata){
         if (err || !fbdata) return callback(err);

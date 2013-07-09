@@ -32,7 +32,7 @@ function AuthController() {
 			if (!fb_auth) return Error.e400(res, err, "Missing facebook auth token");
 			
 			if (user) { // connect an existing user to facebook
-				user.connect.facebook(fb_auth, function(err, user){
+				user.connectFacebook(fb_auth, function(err, user){
 					if (err || !user) {
 						return Error.e401(res, err, "Invalid facebook token");
 					} else {

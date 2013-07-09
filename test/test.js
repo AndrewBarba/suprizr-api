@@ -156,7 +156,7 @@ describe("Restaurant", function(){
 	it("should create supreme pizza", function(done){
 		var supreme_data = {
 			"name" : "Test Supreme Pizza",
-			"location" : {
+			"address" : {
 				"formatted_address" : "177 Massachusetts Avenue, Boston, MA, United States",
 				"reference" : "xxx",
 				"location" : [42.345803, -71.087224]
@@ -173,7 +173,7 @@ describe("Restaurant", function(){
 			should.not.exist(err);
 			should.exist(doc);
 			doc.name.should.equal("Test Supreme Pizza");
-			doc.location.reference.should.equal("xxx");
+			doc.address.reference.should.equal("xxx");
 			supreme = doc;
 			done();
 		});
@@ -181,7 +181,7 @@ describe("Restaurant", function(){
 	it("should create boloco", function(done){
 		var boloco_data = {
 			"name" : "Test Boloco",
-			"location" : {
+			"address" : {
 				"formatted_address" : "177 Massachusetts Avenue, Boston, MA, United States",
 				"reference" : "yyy",
 				"location" : [42.345803, -71.087224]
@@ -198,7 +198,7 @@ describe("Restaurant", function(){
 			should.not.exist(err);
 			should.exist(doc);
 			doc.name.should.equal("Test Boloco");
-			doc.location.reference.should.equal("yyy");
+			doc.address.reference.should.equal("yyy");
 			boloco = doc;
 			done();
 		});
@@ -223,7 +223,7 @@ describe("Restaurant", function(){
 			should.not.exist(err);
 			should.exist(doc);
 			doc.name.should.equal("Test Symphony Sushi");
-			doc.location.reference.should.equal("zzz");
+			doc.address.reference.should.equal("zzz");
 			sushi = doc;
 			done();
 		});

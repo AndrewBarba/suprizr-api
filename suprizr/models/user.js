@@ -46,6 +46,20 @@ UserSchema.statics.create = function(data, callback) {
 }
 
 /**
+ * Filters a given dict for valid user data that can be PUT into a user object
+ */
+UserSchema.statics.filterValidData = function(data) {
+    return = {
+        "email" : data.email,
+        "name" : data.name,
+        "first_name" : data.first_name,
+        "last_name" : data.last_name,
+        "gender" : data.gender,
+        "phone_number" : data.phone_number,
+    };
+}
+
+/**
  * Right before saving the user encrypt their password
  */
 UserSchema.pre("save", function(next) {

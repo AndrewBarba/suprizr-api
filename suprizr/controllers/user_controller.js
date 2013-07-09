@@ -38,14 +38,14 @@ function UserController() {
 				res.send(401, { error : "Access denied" });
 			} else {
 				var id = user._id;
-				var body = req.body;
-				User.putData(id, body, function(err, user){
+				var user_data = User.filterValidData(req.body);
+				User.putData(id, user_data, function(err, user){
 					if (err || !user) {
 						return Error.e404(res, err, "Could not find user with id "+id);
 					} else {
 						return res.json(user);
 					}
-				}, ["admin", "password", "restaurant"]); // restrict these keys
+				}); // restrict these keys
 			}
 		});
 	}

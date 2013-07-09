@@ -39,6 +39,15 @@ var UserSchema = BaseSchema.extend({
     admin: { type: Boolean, default: false, select: false },
 });
 
+UserSchema.statics.create = function(data, callback) {
+    var doc = new User();
+    if (!data["password"]) data["password"] = SP.simpleGUID();
+    doc.putData(data, callback, ["admin", "restaurant"]);
+}
+
+/**
+ * Right before saving the user encrypt their password
+ */
 UserSchema.pre("save", function(next) {
     var self = this;
     if (!self.isModified("password")) return next();
@@ -52,18 +61,18 @@ UserSchema.pre("save", function(next) {
     });
 });
 
-UserSchema.statics.create = function(data, callback) {
-    var doc = new User();
-    if (!data["password"]) data["password"] = SP.simpleGUID();
-    doc.putData(data, callback, ["admin", "restaurant"]);
-}
-
+/**
+ * Validates a plain text password for this user
+ */ 
 UserSchema.methods.validatePassword = function(password, callback) {
     bcrypt.compare(password, this.password, callback);
 };
 
 UserSchema.methods.connect = function(){};
 
+/**
+ * Connects an existing (this) user to Facebook
+ */
 UserSchema.methods.connect.facebook = function(fb_auth, callback) {
     var user = this;
     sphttp.fb("/me", fb_auth, function(err, fbdata){
@@ -78,19 +87,6 @@ UserSchema.methods.connect.facebook = function(fb_auth, callback) {
             return callback(null, user);
         });
     });
-};
-
-UserSchema.statics.login = function(email, password, callback) {
-	this
-        .findOne({ "email" : email })
-        .select("+password")
-        .exec(function(err, user){
-    		if (err || !user) return callback(err);
-            user.validatePassword(password, function(err, success){
-                if (err || !success) return callback(err);
-    			return callback(null, user);
-    		});
-        });
 };
 
 var User = mongoose.model("User", UserSchema);

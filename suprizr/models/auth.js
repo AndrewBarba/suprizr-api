@@ -12,19 +12,43 @@ var AuthSchema = BaseSchema.extend({
     valid      : { type: Boolean, default: true },
 });
 
+/**
+ * Creates Auth for an existing user
+ */
+AuthSchema.statics.create = function(user, callback) {
+	if (!user) return callback();
+	var auth = new Auth({
+		"user" : user._id,
+		"auth_token" : SP.simpleGUID(2),
+	});
+	auth.save(function(err){
+		auth.populate({path:"user", select:"+password"}, callback);
+	});
+}
+
+/**
+ * Registers a user via email and password
+ * Additional fields are below
+ */
 AuthSchema.statics.register = function(data, callback) {
-    User.create(data, function(err, user){
+    var user_data = {
+        "email" : data.email,
+        "name" : data.name,
+        "first_name" : data.first_name,
+        "last_name" : data.last_name,
+        "password" : data.password ? data.password : SP.simpleGUID(),
+        "gender" : data.gender,
+        "phone_number" : data.phone_number,
+    };
+    User.create(user_data, function(err, user){
     	if (err || !user) return callback(err);
-    	var auth = new Auth({
-    		"user" : user._id,
-    		"auth_token" : SP.simpleGUID(2),
-    	});
-    	auth.save(function(err){
-    		auth.populate({path:"user", select:"+password"}, callback);
-    	});
+    	Auth.create(user, callback);
     });
 };
 
+/**
+ * Registers a user via Facebook access_token
+ */
 AuthSchema.statics.register.facebook = function(token, fbdata, callback) {
     var data = {
     	"first_name" : fbdata.first_name,
@@ -36,9 +60,15 @@ AuthSchema.statics.register.facebook = function(token, fbdata, callback) {
     		"auth_token" : token
     	}
     }
-    Auth.register(data, callback);
+    User.create(data, function(err, user){
+    	if (err || !user) return callback(err);
+    	Auth.create(user, callback);
+    });
 };
 
+/**
+ * Changes a users password. Invalidates old auth_token
+ */
 AuthSchema.statics.changePassword = function(user, password, old_password, callback) {
     this.findOne({ "user" : user._id }, function(err, auth){
     	if (err || !auth) return callback(err);
@@ -57,13 +87,25 @@ AuthSchema.statics.changePassword = function(user, password, old_password, callb
     });
 };
 
+/**
+ * Logs in a user via email and password
+ */
 AuthSchema.statics.login = function(email, password, callback) {
-	User.login(email, password, function(err, user){
-		if (err || !user) return callback(err);
-		Auth.getAuth(user, callback);
-	});
+	User
+        .findOne({ "email" : email })
+        .select("+password")
+        .exec(function(err, user){
+    		if (err || !user) return callback(err);
+            user.validatePassword(password, function(err, success){
+                if (err || !success) return callback(err);
+    			Auth.getAuth(user, callback);
+    		});
+        });
 };
 
+/**
+ * Logs in a user via facebook access token
+ */
 AuthSchema.statics.login.facebook = function(token, callback) {
     sphttp.fb("/me", token, function(err, fb){
     	if (err || !fb) return callback(err);
@@ -84,6 +126,9 @@ AuthSchema.statics.login.facebook = function(token, callback) {
     });
 };
 
+/**
+ * Looks up Auth for a user
+ */
 AuthSchema.statics.getAuth = function(user, callback) {
 	this
 		.findOne({ "user" : user._id })
@@ -104,9 +149,12 @@ AuthSchema.statics.getAuth = function(user, callback) {
 		});
 };
 
-AuthSchema.statics.getCurrentUser = function(req, callback, populate) {
+/**
+ * Gets the current user via a request object or supplied auth token
+ */
+AuthSchema.statics.getCurrentUser = function(reqOrToken, callback, populate) {
 	// return callback(null, {});
-	var token = (typeof req == "string") ? req : req.query.auth;
+	var token = (typeof reqOrToken == "string") ? reqOrToken : reqOrToken.query.auth;
 	if (token) {
 		this
 			.findOne({ "auth_token" : token, "valid" : true })
@@ -120,6 +168,10 @@ AuthSchema.statics.getCurrentUser = function(req, callback, populate) {
 	}
 };
 
+/**
+ * Gets the current user and checks if they are admin
+ * If not, returns null
+ */
 AuthSchema.statics.getAdminUser = function(req, callback) {
 	this.getCurrentUser(req, function(err, user){
 		if (err || !user) return callback(err);

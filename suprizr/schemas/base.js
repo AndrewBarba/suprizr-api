@@ -14,9 +14,6 @@ if (SP_UNIT_TEST) {
 var BaseSchema = new mongoose.Schema(base_data, {strict: SP_PROD ? true : "throw" });
 
 BaseSchema.pre("save", function(next) {
-    if (!this.guid) {
-        this.guid = SP.simpleGUID();
-    }
     if (this.isModified()) {
         this.updated_at = Date.now();
     }

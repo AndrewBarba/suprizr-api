@@ -70,8 +70,6 @@ describe("Authentication",function(){
 			"email" : email,
 			"password" : password,
 			"zipcode" : "07853",
-			"lat": 1234.123,
-			"lon": -1234.123
 		};
 		Auth.register(data, function(err, auth){
 			should.not.exist(err);

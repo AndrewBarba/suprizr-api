@@ -65,10 +65,11 @@ OrderSchema.statics.chargeOrder = function(id, description, delivery_time, callb
                     "description" : description,
                     "expected_delivery" : delivery_time
                 };
-                SP.each(order.meals, function(i,meal){
-                    meal.num_orders++;
-                    meal.save();
-                });
+
+                var meal = order.meals[0];
+                meal.num_orders = meal.num_orders + 1;
+                meal.save(); 
+
                 order.save(function(err){
                     callback(err, order);
                 });

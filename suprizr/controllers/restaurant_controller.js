@@ -56,7 +56,7 @@ function RestaurantController() {
 	this.putData = function(req, res, next) {
 		var id = req.query.id;
 		Auth.getCurrentUser(req, function(err, user){
-			if (err || !user || user.restaurant != id) {
+			if (err || !user || (user.restaurant != id && !user.admin)) {
 				return Error.e401(res, err);
 			} else {
 				Restaurant.putData(id, req.body, function(err, rest){

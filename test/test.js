@@ -348,32 +348,7 @@ describe("Meals", function(){
 	});
 });
 
-describe("Supriz", function(){
-	it("should create a supriz order", function(done){
-		var data = {
-			"email" : "test@test.com",
-			"phone_number" : "9085667524",
-			"meals" : [
-				{
-					"health" : 0.4,
-					"ingredients" : {
-						"peanut_free" : true
-					}
-				}
-			],
-			"delivery_address" : {
-				"formatted_address" : "700 Columbus Ave",
-				"reference" : "xxx",
-				"location" : [42.345803, -71.087224]
-			}
-		};
-		Order.supriz(users[0]._id, data, function(err, order){
-			should.not.exist(err);
-			should.exist(order);
-			done();
-		});
-	});
-});
+var stripe_users = [];
 
 describe("Stripe", function(){
 	
@@ -403,6 +378,7 @@ describe("Stripe", function(){
 			should.not.exist(err);
 			should.exist(user);
 			user1 = user;
+			stripe_users.push(user);
 			done();
 		});
 	});
@@ -428,6 +404,7 @@ describe("Stripe", function(){
 					should.exist(user);
 					user.stripe.active_card.last4.should.equal("4242");
 					user2 = user;
+					stripe_users.push(user);
 					done();
 				});
 			});
@@ -445,7 +422,45 @@ describe("Stripe", function(){
 	});
 });
 
+var orders = [];
 
+describe("Supriz", function(){
+
+	it("should create a supriz order", function(done){
+		var data = {
+			"email" : "test@test.com",
+			"phone_number" : "9085667524",
+			"meals" : [
+				{
+					"health" : 0.4,
+					"ingredients" : {
+						"peanut_free" : true
+					}
+				}
+			],
+			"delivery_address" : {
+				"formatted_address" : "700 Columbus Ave",
+				"reference" : "xxx",
+				"location" : [42.345803, -71.087224]
+			}
+		};
+		Order.supriz(stripe_users[0]._id, data, function(err, order){
+			should.not.exist(err);
+			should.exist(order);
+			orders.push(order);
+			done();
+		});
+	});
+
+	it("should submit the order and charge the user", function(done){
+		Order.chargeOrder(orders[0]._id, "The order was placed successfully", 14.75, function(err, order){
+			should.not.exist(err);
+			should.exist(order);
+			should.exist(order.stripe_charge_id);
+			done();
+		});
+	})
+});
 
 
 

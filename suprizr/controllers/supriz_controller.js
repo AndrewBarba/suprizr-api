@@ -34,7 +34,7 @@ module.exports = function(app) {
 	
 	var controller = new SuprizController();
 
-	app.post("/supriz", this.suprizMe);
+	app.post("/supriz", this.suprizMe); // creates a supriz meal order
 
 	return controller;
 }

@@ -37,7 +37,7 @@ function RestaurantController() {
 	};
 
 	this.getById = function(req, res, next) {
-		Auth.getCurrentUser(req, function(){
+		Auth.getCurrentUser(req, function(err, user){
 			if (err || !user) {
 				res.send(401, { error : "Access denied" });
 			} else {

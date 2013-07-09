@@ -65,7 +65,7 @@ Registers or logs in a user via facebook auth token. If Suprizr auth_token is in
 	}
 
 #### PUT (auth) /auth/password
-Changes the current users password and Invalidates the old auth token. You must store the newly returned auth token and use that for requests from this point forward
+Changes the current users password and Invalidates the old auth token. You must store the newly returned auth token and use that for requests from this point forward.
 	
 	sample_post_body = {
 		"password" : "newpassword",

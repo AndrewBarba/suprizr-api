@@ -31,6 +31,9 @@ AuthSchema.statics.create = function(user, callback) {
  * Additional fields are below
  */
 AuthSchema.statics.register = function(data, callback) {
+    if (!data.email) {
+        return callback("Missing email field");
+    }
     var user_data = {
         "email" : data.email,
         "name" : data.name,

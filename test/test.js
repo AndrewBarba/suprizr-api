@@ -4,8 +4,8 @@
 
 // Globals
 SP_SETTINGS = require("../settings");
-SP_ENV = "development";
-SP_PROD = SP_ENV == "production";
+SP_ENV = "development"; // always always always run these in dev mode
+SP_PROD = false; // this is not prod and never will be
 SP_UNIT_TEST = true; // set unit testing to true
 trace = console.log;
 

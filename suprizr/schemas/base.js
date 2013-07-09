@@ -20,18 +20,26 @@ BaseSchema.pre("save", function(next) {
     next();
 });
 
-BaseSchema.statics.putData = function(id, data, callback, restricted_keys) {
-    if (!restricted_keys) restricted_keys = [];
-    restricted_keys.concat(BaseSchema.restricted_fields);
-    data = SP.removeKeys(data, restricted_keys);
+BaseSchema.statics.putData = function(id, data, callback, allowed_keys) {
+    var allowed_data = {};
+    SP.each(allowed_keys, function(i,k){
+        val = data[k];
+        if (val != null) allowed_data[k] = val;
+    });
     this.findByIdAndUpdate(id, data, callback);
 };
 
-BaseSchema.methods.putData = function(data, callback, restricted_keys) {
-    if (!restricted_keys) restricted_keys = [];
-    restricted_keys.concat(BaseSchema.restricted_fields);
-    SP.removeKeys(data, restricted_keys);
-    SP.extend(this, data, true);
+BaseSchema.methods.putData = function(data, callback, allowed_keys) {
+    var allowed_data = {};
+    if (allowed_keys && allowed_keys.length) {
+        SP.each(allowed_keys, function(i,k){
+            val = data[k];
+            if (val != null) allowed_data[k] = val;
+        });
+    } else {
+        allowed_data = data;
+    }
+    SP.extend(this, allowed_data, true);
     this.save(callback);
 };
 

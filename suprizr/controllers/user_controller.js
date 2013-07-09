@@ -45,7 +45,7 @@ function UserController() {
 					} else {
 						return res.json(user);
 					}
-				}); // restrict these keys
+				}, User.validKeys()); // only allow these keys
 			}
 		});
 	}

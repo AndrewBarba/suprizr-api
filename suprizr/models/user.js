@@ -40,23 +40,15 @@ var UserSchema = BaseSchema.extend({
 });
 
 UserSchema.statics.create = function(data, callback) {
-    var doc = new User();
     if (!data["password"]) data["password"] = SP.simpleGUID();
-    doc.putData(data, callback, ["admin", "restaurant"]);
+    (new User(data)).save(callback);
 }
 
 /**
  * Filters a given dict for valid user data that can be PUT into a user object
  */
-UserSchema.statics.filterValidData = function(data) {
-    return = {
-        "email" : data.email,
-        "name" : data.name,
-        "first_name" : data.first_name,
-        "last_name" : data.last_name,
-        "gender" : data.gender,
-        "phone_number" : data.phone_number,
-    };
+UserSchema.statics.validKeys = function() {
+    return ["email", "name", "first_name", "last_name", "gender", "phone_number"];
 }
 
 /**

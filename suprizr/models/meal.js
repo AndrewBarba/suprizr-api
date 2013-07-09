@@ -19,8 +19,7 @@ var MealSchema = BaseSchema.extend({
 });
 
 MealSchema.statics.create = function(data, callback) {
-    var doc = new Meal();
-    doc.putData(data, callback);
+    (new Meal(data)).save(callback);
 }
 
 /**

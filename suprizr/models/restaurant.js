@@ -18,8 +18,7 @@ var RestaurantSchema = BaseSchema.extend({
 });
 
 RestaurantSchema.statics.create = function(data, callback) {
-    var doc = new Restaurant();
-    doc.putData(data, callback);
+    (new Restaurant(data)).save(callback);
 }
 
 /**

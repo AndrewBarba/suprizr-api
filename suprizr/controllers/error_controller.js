@@ -3,7 +3,7 @@ function ErrorController() {
 
 	this.e = function(code, res, err, text) {
 		if (!text) text = "Something went wrong: ";
-		return res.send(code, { error: text+err });
+		return res.send(code, { message: text, error: err });
 	}
 
 	this.e400 = function(res, err, text) {
@@ -17,7 +17,7 @@ function ErrorController() {
 	}
 
 	this.e404 = function(res, err, text) {
-		if (!text) text = "We could not find that object: ";
+		if (!text) text = "We could not find that object";
 		return this.e(404, res, err, text);
 	}
 

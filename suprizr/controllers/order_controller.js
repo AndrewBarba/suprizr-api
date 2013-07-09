@@ -6,26 +6,41 @@ var User = require("../models/user"),
 
 function OrderController() {
 
-	this.getOrder = function(req, res, next) {
-		Auth.getCurrentUser(req, function(){
-			if (err || !user) {
-				res.send(401, { error : "Access denied" });
-			} else {
-				var id = req.param.id;
-				Order.findById(id, function(err, doc){
-					if (err || !doc) {
-						return Error.e404(res, err, "Could not find order with id "+id);
-					} else {
-						return res.json(doc);
-					}
+	this.getOpenOrders = function(req, res, next) {
+		Auth.getAdminUser(req, function(err, admin){
+			if (err || !admin) return Error.e401(res, err);
+			
+			var query = {
+				"order_status" : "open"
+			};
+			Order.find(query, function(err, orders){
+				if (err || !orders) return Error.e400(res, err, "Could not find any open orders");
+				res.json({
+					"orders" : orders
 				});
-			}
+			});
+		});
+	}
+
+	this.getOrder = function(req, res, next) {
+		Auth.getCurrentUser(req, function(err, user){
+			if (err || !user) return Error.e401(res, err);
+			
+			var id = req.param.id;
+			Order.findById(id, function(err, doc){
+				if (err || !doc) {
+					return Error.e404(res, err, "Could not find order with id "+id);
+				} else {
+					return res.json(doc);
+				}
+			});
 		});
 	}
 
 	this.completeOrder = function(req, res, next){
 		Auth.getAdminUser(req, function(err, admin){
-			if (err) return Error.e401(err, res);
+			if (err || !admin) return Error.e401(res, err);
+			
 			var order = req.query.id;
 			var description = req.body.description;
 			var time = req.body.delivery_time;
@@ -37,22 +52,21 @@ function OrderController() {
 	}
 
 	this.cancelOrder = function(req, res, next){
-		Auth.getAdminUser(req, function(){
-			if (err || !user) {
-				res.send(401, { error : "Access denied" });
-			} else {
-				var order = req.query.id;
-				Order.cancelOrder(id, function(err, order){
-					if (err || !order) return Error.e400(res, err, "Failed to cancel/refund order");
-					return res.json(order);
-				});
-			}
+		Auth.getAdminUser(req, function(err, admin){
+			if (err || !admin) return Error.e401(res, err);
+			
+			var order = req.query.id;
+			Order.cancelOrder(id, function(err, order){
+				if (err || !order) return Error.e400(res, err, "Failed to cancel/refund order");
+				return res.json(order);
+			});
 		});
 	}
 
 	this.updateOrder = function(req, res, next) {
 		Auth.getAdminUser(req, function(err, admin){
-			if (err) return Error.e401(err, res);
+			if (err) return Error.e401(res, err);
+			
 			var order = req.query.id;
 			var description = req.body.description;
 			var status = req.body.status;
@@ -74,10 +88,11 @@ module.exports = function(app) {
 	
 	var controller = new OrderController();
 
-	app.get("/order/:id", this.getOrder); // gets an order
-	app.delete("/order/:id", this.getOrder); // refunds/cancels an order or cancels it if the order has yet to be placed
-	app.put("/order/:id/complete", this.completeOrder);
-	app.put("/order/:id", this.updateOrder);
+	app.get("/order", controller.getOpenOrders); // gets a list of all open orders
+	app.get("/order/:id", controller.getOrder); // gets an order
+	app.delete("/order/:id", controller.getOrder); // refunds/cancels an order or cancels it if the order has yet to be placed
+	app.put("/order/:id/complete", controller.completeOrder);
+	app.put("/order/:id", controller.updateOrder);
 
 	return controller;
 }

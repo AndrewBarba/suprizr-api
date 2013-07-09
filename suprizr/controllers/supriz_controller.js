@@ -16,6 +16,7 @@ function SuprizController() {
 					if (err || !user) return Error.e400(res, err, "Failed to add stripe data to user");
 					Order.supriz(user, req.body, function(err, order){
 						if (err || !order) return Error.e400(res, err, "Failed to create order");
+						
 						return res.json(order);
 					});
 				});
@@ -24,6 +25,7 @@ function SuprizController() {
 					if (err || !auth) return Error.e400(res, err, "Failed to create a user from stripe token");
 					Order.supriz(user, req.body, function(err, order){
 						if (err || !order) return Error.e400(res, err, "Failed to create order");
+						
 						order.auth = auth;
 						res.json(auth);
 					});
@@ -37,7 +39,7 @@ module.exports = function(app) {
 	
 	var controller = new SuprizController();
 
-	app.post("/supriz", this.suprizMe); // creates a supriz meal order
+	app.post("/supriz", controller.suprizMe); // creates a supriz meal order
 
 	return controller;
 }

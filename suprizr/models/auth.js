@@ -164,7 +164,7 @@ AuthSchema.statics.getCurrentUser = function(reqOrToken, callback, populate) {
 				callback(null, auth.user);
 			});
 	} else {
-		callback();
+		callback("Not authorized");
 	}
 };
 
@@ -178,7 +178,7 @@ AuthSchema.statics.getAdminUser = function(req, callback) {
 		if (user.admin) {
 			callback(null, user);
 		} else {
-			callback();
+			callback("Not authorized");
 		}
 	}, "+admin");
 };

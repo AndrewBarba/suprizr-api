@@ -101,3 +101,52 @@ Creates a new supriz meal. There is currently only support for 1 meal but I'm le
 		"phone_number" : "9085667524",
 		"stripe_token" : "andklw232klndwdew"
 	}
+
+
+- - -
+
+/order
+----
+Endpoint for interacting with Order objects
+
+#### GET (auth-admin) /order
+Returns a list of open orders
+
+#### GET (auth) /order/:id
+Gets and order by the provided id
+
+#### PUT /order/:id/complete
+Completes an order by setting the status to 'ordered' and charges the users credit card
+
+	sample_post_body = {
+		"description" : "This order has successfully been placed!"
+		"delivery_time" : 18.75 // this means the order will be deliverd ~ 6:45pm (NOTE: .75 is not a mistake, it is a fraction of an hour)
+	}
+
+#### PUT /order/:id
+Updates an order with a status and description
+
+	sample_post_body = {
+		"order_status" : "delayed",
+		"description" : "The restaurant is not picking up the phone. Waiting to contact them"
+	}
+
+#### DELETE (auth-admin) /order/:id
+Cancels an order if it has not yet beeen ordered or refunds the order if it has been ordered
+
+app.put("/order/:id", controller.updateOrder);
+
+
+- - -
+
+
+
+
+
+
+
+
+
+
+
+

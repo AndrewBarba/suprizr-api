@@ -52,7 +52,7 @@ OrderSchema.statics.supriz = function(user, data, callback) {
     });
 }
 
-OrderSchema.statics.chargeOrder = function(id, description, delivery_time, callback) {
+OrderSchema.statics.completeOrder = function(id, description, delivery_time, callback) {
     this
         .findOne({"_id":id})
         .populate("user meals")
@@ -77,6 +77,29 @@ OrderSchema.statics.chargeOrder = function(id, description, delivery_time, callb
                     callback(err, order);
                 });
             });
+        });
+}
+
+OrderSchema.statics.cancelOrder = function(id, callback) {
+    this
+        .findOne({"_id":id})
+        .populate("user meals")
+        .exec(function(err, order){
+            if (err || !order) return callback(err);
+            if (order.stripe_charge_id) {
+                Stripe.refundCharge(order.stripe_charge_id, function(err, charge){
+                    if (err || !charge) return callback(err);
+                    order.order_status = "refunded";
+                    order.save(function(err){
+                        callback(err, order);
+                    });
+                });
+            } else {
+                order.order_status = "canceled";
+                order.save(function(err){
+                    callback(err, order);
+                });
+            }
         });
 }
 

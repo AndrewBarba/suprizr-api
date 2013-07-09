@@ -409,12 +409,22 @@ describe("Stripe", function(){
 		});
 	});
 
+	var charge_id = false;
 	it("should charge an existing user", function(done){
 		Stripe.chargeUser(user2, 20.00, function(err, charge){ // amount in dollars
 			should.not.exist(err);
 			should.exist(charge);
 			charge.customer.should.equal(user2.stripe.id);
 			charge.amount.should.equal(2000); // amount in cents
+			charge_id = charge.id;
+			done();
+		});
+	});
+
+	it("should refund an charge", function(done){
+		Stripe.refundCharge(charge_id, function(err, charge){
+			should.not.exist(err);
+			should.exist(charge);
 			done();
 		});
 	});
@@ -450,14 +460,25 @@ describe("Supriz", function(){
 		});
 	});
 
+	var order_id = false;
 	it("should submit the order and charge the user", function(done){
-		Order.chargeOrder(orders[0]._id, "The order was placed successfully", 14.75, function(err, order){
+		Order.completeOrder(orders[0]._id, "The order was placed successfully", 14.75, function(err, order){
 			should.not.exist(err);
 			should.exist(order);
 			should.exist(order.stripe_charge_id);
+			order_id = order._id;
 			done();
 		});
-	})
+	});
+
+	it("should refund an order", function(done){
+		Order.cancelOrder(order_id, function(err, order){
+			should.not.exist(err);
+			should.exist(order);
+			order.order_status.should.equal("refunded");
+			done();
+		});
+	});
 });
 
 
@@ -480,4 +501,4 @@ describe("Supriz", function(){
 
 
 
-// clean();
+clean();

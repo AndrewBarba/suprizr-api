@@ -33,7 +33,7 @@ function RestaurantController() {
 					}
 				});
 			}
-		})
+		});
 	};
 
 	this.getById = function(req, res, next) {
@@ -50,7 +50,7 @@ function RestaurantController() {
 					}
 				});
 			}
-		})
+		});
 	};
 
 	this.putData = function(req, res, next) {

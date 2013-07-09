@@ -96,6 +96,13 @@ function StripeModule() {
 			return callback(null, charge);
 		});
 	}
+
+	/**
+	 * Completely refunds a charge
+	 */
+	this.refundCharge = function(charge_id, callback){
+		this.api.charges.refund(charge_id, callback);
+	}
 }
 
 Stripe = new StripeModule();

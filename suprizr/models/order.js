@@ -7,7 +7,7 @@ LocationSchema = require("../schemas/location"),
     Restaurant = require("../models/restaurant"),
         extend = require("mongoose-schema-extend");
 
-var status_enum = [ "open", "ordered", "delivered" ];
+var status_enum = [ "open", "ordered", "delivered", "canceled", "refunded" ];
 
 var OrderSchema = BaseSchema.extend({
     meals: [{ type: String, ref: "Meal" }],

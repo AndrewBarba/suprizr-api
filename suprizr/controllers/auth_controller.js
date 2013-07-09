@@ -6,7 +6,7 @@ function AuthController() {
 
 	this.register = function(req, res, next) {
 		Auth.register(req.body, function(err, auth){
-			if (err ||!user) {
+			if (err || !auth) {
 				return Error.e400(res, err, "Could not register user");
 			} else {
 				return res.json(auth);
@@ -29,7 +29,8 @@ function AuthController() {
 	this.login.facebook = function(req, res, next) {
 		Auth.getCurrentUser(function(err, user){
 			var fb_auth = req.query.facebook_auth_token;
-			if (!fb_auth) return Error.e401(res, err, "Invalid facebook token");
+			if (!fb_auth) return Error.e400(res, err, "Missing facebook auth token");
+			
 			if (user) { // connect an existing user to facebook
 				user.connect.facebook(fb_auth, function(err, user){
 					if (err || !user) {

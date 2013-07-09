@@ -55,7 +55,7 @@ SAMPLE SUPRIZ POST BODY
             } 
         }
     ],
-    adress : {
+    delivery_adress : {
         formatted_address : "700 Columbus Ave",
         reference : "1234jl32ndlk2je3j2e9230djeiowd43de3",
         location : [ -123.3213, 1234.23232 ]

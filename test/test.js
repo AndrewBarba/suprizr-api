@@ -56,6 +56,8 @@ describe("Connect to MongoHQ", function(){
 
 clean();
 
+var users = [];
+
 describe("Authentication",function(){
 	var email = "test+"+SP.s4()+"@test.com"; var password = "123456789";
 	var new_user = false;
@@ -77,6 +79,7 @@ describe("Authentication",function(){
 			should.exist(auth.user);
 			new_auth = auth;
 			new_user = auth.user;
+			users.push(new_user);
 			done();
 		});
 	});
@@ -134,6 +137,7 @@ describe("Facebook", function(){
 			auth.user.first_name.should.equal("Test");
 			auth.user.last_name.should.equal("Suprizr");
 			fb_user = auth.user;
+			users.push(fb_user);
 			done();
 		});
 	});
@@ -148,6 +152,8 @@ describe("Facebook", function(){
 		});
 	});
 });
+
+var restaurants = [];
 
 describe("Restaurant", function(){
 	var supreme = false;
@@ -175,6 +181,7 @@ describe("Restaurant", function(){
 			doc.name.should.equal("Test Supreme Pizza");
 			doc.address.reference.should.equal("xxx");
 			supreme = doc;
+			restaurants.push(doc);
 			done();
 		});
 	});
@@ -200,6 +207,7 @@ describe("Restaurant", function(){
 			doc.name.should.equal("Test Boloco");
 			doc.address.reference.should.equal("yyy");
 			boloco = doc;
+			restaurants.push(doc);
 			done();
 		});
 	});
@@ -209,7 +217,7 @@ describe("Restaurant", function(){
 			"address" : {
 				"formatted_address" : "177 Massachusetts Avenue, Boston, MA, United States",
 				"reference" : "zzz",
-				"location" : [42.345803, -74.087224]
+				"location" : [42.345803, -71.087224]
 			},
 			"description" : "A sushi place",
 			"radius" : 2,
@@ -225,19 +233,146 @@ describe("Restaurant", function(){
 			doc.name.should.equal("Test Symphony Sushi");
 			doc.address.reference.should.equal("zzz");
 			sushi = doc;
+			restaurants.push(doc);
 			done();
 		});
 	});
 
 	it("should find restaurants near a point", function(done){
-		Restaurant.findNearBy([42.345803, -71.087224], function(err, docs, rids){
+		Restaurant.supriz([42.345803, -71.087224], function(err, docs, rids){
 			should.not.exist(err);
 			should.exist(docs);
 			should.exist(rids);
-			trace(rids);
 			done();
 		});
 	})
+});
+
+var meals = [];
+
+describe("Meals", function(){
+	
+	function ids() {
+		var ids = [];
+		SP.each(restaurants, function(i,r){
+			ids.push(r._id);
+		});
+		return ids;
+	}
+
+	it("should create a meal", function(done){
+		var data = {
+			"restaurant" : restaurants[0]._id,
+			"health" : 0.4,
+			"name" : "Pizza"
+		};
+		Meal.create(data, function(err, meal){
+			should.not.exist(err);
+			should.exist(meal);
+			meals.push(meal);
+			done();
+		});
+	});
+
+	it("should create a meal", function(done){
+		var data = {
+			"restaurant" : restaurants[1]._id,
+			"health" : 0.3,
+			"name" : "Buffalo Burrito"
+		};
+		Meal.create(data, function(err, meal){
+			should.not.exist(err);
+			should.exist(meal);
+			meals.push(meal);
+			done();
+		});
+	});
+
+	it("should create a meal", function(done){
+		var data = {
+			"restaurant" : restaurants[2]._id,
+			"health" : 0.2,
+			"name" : "Spicy Combo",
+			"ingredients" : {
+				"peanut_free" : true
+			}
+		};
+		Meal.create(data, function(err, meal){
+			should.not.exist(err);
+			should.exist(meal);
+			meals.push(meal);
+			done();
+		});
+	});
+
+	it("should find all meals", function(done){
+		var meal = {
+			"health" : 0.4,
+		};
+		Meal.supriz(ids(), meal, function(err, meals){
+			should.not.exist(err);
+			should.exist(meals);
+			meals.length.should.equal(3);
+			done();
+		});
+	});
+
+	it("should find peanut free meals", function(done){
+		var meal = {
+			"health" : 0.4,
+			"ingredients" : {
+				"peanut_free" : true
+			}
+		};
+		Meal.supriz(ids(), meal, function(err, meals){
+			should.not.exist(err);
+			should.exist(meals);
+			meals.length.should.equal(1);
+			meals[0].ingredients.peanut_free.should.equal(true);
+			done();
+		});
+	});
+
+	it("should not find any meals", function(done){
+		var meal = {
+			"health" : 0.4,
+			"ingredients" : {
+				"peanut_free" : true
+			}
+		};
+		Meal.supriz([ids()[0]], meal, function(err, meals){
+			should.not.exist(err);
+			should.not.exist(meals);
+			done();
+		});
+	});
+});
+
+describe("Supriz", function(){
+	it("should create a supriz order", function(done){
+		var data = {
+			"email" : "test@test.com",
+			"phone_number" : "9085667524",
+			"meals" : [
+				{
+					"health" : 0.4,
+					"ingredients" : {
+						"peanut_free" : true
+					}
+				}
+			],
+			"delivery_address" : {
+				"formatted_address" : "700 Columbus Ave",
+				"reference" : "xxx",
+				"location" : [42.345803, -71.087224]
+			}
+		};
+		Order.supriz(users[0]._id, data, function(err, order){
+			should.not.exist(err);
+			should.exist(order);
+			done();
+		});
+	});
 });
 
 describe("Stripe", function(){
@@ -332,4 +467,4 @@ describe("Stripe", function(){
 
 
 
-clean();
+// clean();

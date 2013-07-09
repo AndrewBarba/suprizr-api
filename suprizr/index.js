@@ -165,7 +165,7 @@ SP.each = function(arr,fnc) { // a simple for-each implementation
 SP.extend = function(a,b,f) { // combines second dict into first dict and returns it. if third param is true, b keys overright a keys
     if (a) {
         SP.each(b,function(k,v){
-            if (v && (!a[k] || f)) a[k] = v;
+            if (v != null && (!a[k] || f)) a[k] = v;
         });
         return a;
     } else {

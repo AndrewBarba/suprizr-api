@@ -23,16 +23,24 @@ MealSchema.statics.create = function(data, callback) {
     doc.putData(data, callback);
 }
 
-MealSchema.statics.findForOrder = function(restaurant_ids, meal, callback) {
+/**
+ * Finds a Supriz meal for the given data and restaurants
+ */
+MealSchema.statics.supriz = function(restaurant_ids, meal, callback) {
     var min_health = Math.max(meal.health - 0.2, 0);
+    if (!meal.ingredients) meal.ingredients = {};
     var meal_query = {
         "restaurant" : { "$in" : restaurant_ids },
         "health" : { "$gte" : min_health, "$lte" : meal.health },
-        "ingredients.gluten_free" : meal.ingredients.gluten_free,
-        "ingredients.dairy_free" : meal.ingredients.dairy_free,
-        "ingredients.peanut_free" : meal.ingredients.peanut_free,
-        "ingredients.meat_free" : meal.ingredients.meat_free,
     };
+
+    var ingredients = ["gluten_free", "dairy_free", "peanut_free", "meat_free"];
+    SP.each(ingredients, function(i,ing){
+        if (meal.ingredients[ing]) {
+            if (!meal_query.ingredients) meal_query.ingredients = {};
+            meal_query.ingredients[ing] = true;
+        }
+    });
     Meal.find(meal_query, function(err, meals){
         if (err || !meals || !meals.length) return callback(err);
         return callback(null, meals);

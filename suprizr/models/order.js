@@ -25,23 +25,27 @@ var OrderSchema = BaseSchema.extend({
     stripe_charge_id: String,
 });
 
-OrderSchema.statics.create = function(user_id, data, callback) {
+OrderSchema.statics.supriz = function(user_id, data, callback) {
     var doc = new Order();
 
     var order_data = {
         "user" : user_id,
         "email" : data.email,
         "phone_number" : data.phone_number,
-        "delivery_address" : data.address,
+        "delivery_address" : data.delivery_address,
     };
 
-    Restaurant.findNearBy(data.address.location, function(err, docs, rids){
+    Restaurant.supriz(data.delivery_address.location, function(err, docs, rids){
         if (err) return callback(err);
-        Meal.findForOrder(rids, data.meals[0], function(err, meals){
-            if (err) return callback(err);
+        Meal.supriz(rids, data.meals[0], function(err, meals){
+            if (err || !meals) return callback(err);
             var meal = SP.randomElement(meals);
-            order_data["meals"] = [meal._id];
-            doc.putData(data, callback);
+            order_data["meals"] = [ meal._id ];
+            doc.putData(order_data, function(err, doc){
+                doc.populate("meals", function(err, doc){
+                    callback(null, doc);
+                });
+            });
         });
     });
 }
@@ -49,7 +53,7 @@ OrderSchema.statics.create = function(user_id, data, callback) {
 OrderSchema.statics.chargeOrder = function(id, description, delivery_time, callback) {
     this
         .findOne({"_id":id})
-        .populate("user")
+        .populate("user meals")
         .exec(function(err, order){
             if (err || !order) return callback(err);
             var amount = order.meals.length * 20;
@@ -61,6 +65,10 @@ OrderSchema.statics.chargeOrder = function(id, description, delivery_time, callb
                     "description" : description,
                     "expected_delivery" : delivery_time
                 };
+                SP.each(order.meals, function(i,meal){
+                    meal.num_orders++;
+                    meal.save();
+                });
                 order.save(function(err){
                     callback(err, order);
                 });
@@ -87,7 +95,7 @@ SAMPLE SUPRIZ POST BODY
             } 
         }
     ],
-    adress : {
+    delivery_adress : {
         formatted_address : "700 Columbus Ave",
         reference : "1234jl32ndlk2je3j2e9230djeiowd43de3",
         location : [ -123.3213, 1234.23232 ]

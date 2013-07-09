@@ -467,4 +467,4 @@ describe("Stripe", function(){
 
 
 
-// clean();
+clean();

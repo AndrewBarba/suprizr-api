@@ -20,7 +20,7 @@ function UserController() {
 			if (err || !user) {
 				res.send(401, { error : "Access denied" });
 			} else {
-				var id = req.query.id;
+				var id = req.params.id;
 				User.findById(id, function(err, user){
 					if (err || !user) {
 						return Error.e404(res, err, "Could not find user with id "+id);

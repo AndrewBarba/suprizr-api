@@ -41,7 +41,7 @@ function RestaurantController() {
 			if (err || !user) {
 				res.send(401, { error : "Access denied" });
 			} else {
-				var id = req.param.id;
+				var id = req.params.id;
 				Restaurant.findById(id, function(err, doc){
 					if (err || !doc) {
 						return Error.e404(res, err, "Could not find restaurant with id "+id);
@@ -54,7 +54,7 @@ function RestaurantController() {
 	};
 
 	this.putData = function(req, res, next) {
-		var id = req.query.id;
+		var id = req.params.id;
 		Auth.getCurrentUser(req, function(err, user){
 			if (err || !user || (user.restaurant != id && !user.admin)) {
 				return Error.e401(res, err);
@@ -76,7 +76,7 @@ module.exports = function(app) {
 	var controller = new RestaurantController();
 
 	app.get("/restaurant", controller.getRestaurants);
-	app.get("/restaurant/:id", controller.getRestaurants);
+	app.get("/restaurant/:id", controller.getById);
 	app.post("/restaurant", controller.createRestaurant);
 	app.put("/restaurant/:id", controller.putData);
 

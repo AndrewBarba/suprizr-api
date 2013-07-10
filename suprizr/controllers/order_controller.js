@@ -26,7 +26,7 @@ function OrderController() {
 		Auth.getCurrentUser(req, function(err, user){
 			if (err || !user) return Error.e401(res, err);
 			
-			var id = req.param.id;
+			var id = req.params.id;
 			Order.findById(id, function(err, doc){
 				if (err || !doc) {
 					return Error.e404(res, err, "Could not find order with id "+id);
@@ -41,7 +41,7 @@ function OrderController() {
 		Auth.getAdminUser(req, function(err, admin){
 			if (err || !admin) return Error.e401(res, err);
 			
-			var order = req.query.id;
+			var order = req.params.id;
 			var description = req.body.description;
 			var time = req.body.delivery_time;
 			Order.completeOrder(order, description, time, function(err, order){
@@ -55,7 +55,7 @@ function OrderController() {
 		Auth.getAdminUser(req, function(err, admin){
 			if (err || !admin) return Error.e401(res, err);
 			
-			var order = req.query.id;
+			var order = req.params.id;
 			Order.cancelOrder(id, function(err, order){
 				if (err || !order) return Error.e400(res, err, "Failed to cancel/refund order");
 				return res.json(order);
@@ -67,7 +67,7 @@ function OrderController() {
 		Auth.getAdminUser(req, function(err, admin){
 			if (err) return Error.e401(res, err);
 			
-			var order = req.query.id;
+			var order = req.params.id;
 			var description = req.body.description;
 			var status = req.body.status;
 			var data = {

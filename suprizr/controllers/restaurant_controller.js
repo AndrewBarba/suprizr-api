@@ -11,7 +11,7 @@ function RestaurantController() {
 				return Error.e401(res, err);
 			} else {
 				Restaurant.find({}, function(err, docs){
-					if (err || !restaurants) return Error.e400(res, err);
+					if (err || !docs) return Error.e400(res, err);
 					return res.json({
 						"restaurants" : docs
 					});

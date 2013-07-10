@@ -138,6 +138,24 @@ Cancels an order if it has not yet beeen ordered or refunds the order if it has 
 - - -
 
 
+/user
+----
+Endpoint that returns user objects
+
+#### GET (auth) /user
+Returns the current user associated with the given auth token
+
+#### GET (auth) /user/:id
+Returns a user with the given id
+
+#### PUT (auth) /user
+Changes/edits user data for the current user. This is how you would change your email or name
+
+	sample_post_body = {
+		"name" : "New Name",
+		"email" : "new@email.com"
+	}
+
 
 
 

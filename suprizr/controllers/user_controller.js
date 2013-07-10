@@ -25,6 +25,7 @@ function UserController() {
 					if (err || !user) {
 						return Error.e404(res, err, "Could not find user with id "+id);
 					} else {
+						delete user.locations; // hides the users locations before sending to users
 						return res.json(user);
 					}
 				});

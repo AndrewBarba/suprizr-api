@@ -158,7 +158,6 @@ AuthSchema.statics.getCurrentUser = function(reqOrToken, callback, populate) {
 	if (token) {
 		Auth
 			.findOne({ "auth_token" : token, "valid" : true })
-            .select("locations")
 			.populate("user", populate)
 			.exec(function(err, auth){
 				if (err || !auth) return callback(err);

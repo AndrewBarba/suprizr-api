@@ -27,7 +27,7 @@ var UserSchema = BaseSchema.extend({
             card_type: String
         }
     },
-    locations: { type: [LocationSchema], default: [], select: false }, // array of past order locations
+    locations: { type: [LocationSchema], default: [] }, // array of past order locations
     first_name: String,
     last_name: String, 
     name: String,

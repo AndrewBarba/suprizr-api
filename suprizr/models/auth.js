@@ -152,13 +152,13 @@ AuthSchema.statics.getAuth = function(user, callback) {
 /**
  * Gets the current user via a request object or supplied auth token
  */
-AuthSchema.statics.getCurrentUser = function(reqOrToken, callback, populate) {
+AuthSchema.statics.getCurrentUser = function(reqOrToken, callback, select) {
 	// return callback(null, {});
 	var token = (typeof reqOrToken == "string") ? reqOrToken : reqOrToken.query.auth;
 	if (token) {
 		Auth
 			.findOne({ "auth_token" : token, "valid" : true })
-			.populate("user", populate)
+			.populate("user", select)
 			.exec(function(err, auth){
 				if (err || !auth) return callback(err);
 				callback(null, auth.user);

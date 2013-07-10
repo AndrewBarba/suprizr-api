@@ -12,7 +12,7 @@ var UserSchema = BaseSchema.extend({
     facebook: { 
         id: { type: String, index: { unique: true, sparse: true } },
         username: String,
-        auth_token: String
+        auth_token: { type: String, select: false }
     },
     twitter: { 
         id: { type: String, index: { unique: true, sparse: true } },

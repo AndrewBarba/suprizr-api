@@ -81,7 +81,7 @@ function RestaurantController() {
 					if (err || !doc) {
 						return Error.e400(res, err);
 					} else {
-						Meal.update({"restaurant":doc._id}, {deleted:true}, {multi:true});
+						Meal.update({"restaurant":doc._id}, {deleted:true}, {multi:true}).exec();
 						return res.json(doc);
 					}
 				});

@@ -65,7 +65,7 @@ function RestaurantController() {
 					} else {
 						return res.json(rest);
 					}
-				}, Restaurant.allowed_keys);
+				});
 			}
 		}, "+restaurant");
 	}

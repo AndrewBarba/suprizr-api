@@ -156,8 +156,9 @@ AuthSchema.statics.getCurrentUser = function(reqOrToken, callback, populate) {
 	// return callback(null, {});
 	var token = (typeof reqOrToken == "string") ? reqOrToken : reqOrToken.query.auth;
 	if (token) {
-		this
+		Auth
 			.findOne({ "auth_token" : token, "valid" : true })
+            .select("locations")
 			.populate("user", populate)
 			.exec(function(err, auth){
 				if (err || !auth) return callback(err);

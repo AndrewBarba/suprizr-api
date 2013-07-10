@@ -12,7 +12,7 @@ function UserController() {
 			} else {
 				return res.json(user);
 			}
-		});
+		}, "+locations");
 	}
 
 	this.getById = function(req, res, next) {

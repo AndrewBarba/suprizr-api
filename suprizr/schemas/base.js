@@ -5,6 +5,7 @@ var base_data = {
     _id: { type: String, default: SP.simpleGUID, index: { unique: true } },
     updated_at: { type: Number, default: Date.now },
     created_at: { type: Number, default: Date.now },
+    deleted: { type: Boolean, default: false, select: false },
 };
 
 if (SP_UNIT_TEST) {
@@ -19,6 +20,15 @@ BaseSchema.pre("save", function(next) {
     }
     next();
 });
+
+BaseSchema.statics.findById = function(id, callback) {
+    return this.find({ "_id" : id, "deleted" : false})
+};
+
+BaseSchema.statics.findById = function(query, callback) {
+    query = SP.extend(query, { "deleted" : false });
+    return this.find(query);
+};
 
 BaseSchema.statics.putData = function(id, data, callback, allowed_keys) {
     var allowed_data = {};
@@ -41,6 +51,24 @@ BaseSchema.methods.putData = function(data, callback, allowed_keys) {
     }
     SP.extend(this, allowed_data, true);
     this.save(callback);
+};
+
+BaseSchema.methods.delete = function(callback) {
+    this.deleted = true;
+    this.save(callback);
+};
+
+BaseSchema.methods.restore = function(callback) {
+    this.deleted = false;
+    this.save(callback);
+};
+
+BaseSchema.statics.delete = function(id, callback) {
+    this.findByIdAndUpdate(id, { "deleted" : true }, callback);
+};
+
+BaseSchema.statics.restore = function(id, callback) {
+    this.findByIdAndUpdate(id, { "deleted" : false }, callback);
 };
 
 BaseSchema.dataScheme = base_data;

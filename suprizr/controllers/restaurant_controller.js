@@ -1,6 +1,7 @@
 
 var Restaurant = require("../models/restaurant"),
 	      Auth = require("../models/auth"),
+	      Meal = require("../models/meal"),
 	     Error = require("./error_controller");
 
 function RestaurantController() {
@@ -69,6 +70,24 @@ function RestaurantController() {
 			}
 		}, "+restaurant");
 	}
+
+	this.removeRestaurant = function(req, res, next) {
+		var id = req.params.id;
+		Auth.getAdminUser(req, function(err, admin){
+			if (err || !admin) {
+				return Error.e401(res, err);
+			} else {
+				Restaurant.delete(id, function(err, doc){
+					if (err || !doc) {
+						return Error.e400(res, err);
+					} else {
+						Meal.update({"restaurant":doc._id}, {deleted:true}, {multi:true});
+						return res.json(doc);
+					}
+				});
+			}
+		});
+	}
 }
 
 module.exports = function(app) {
@@ -79,6 +98,7 @@ module.exports = function(app) {
 	app.get("/restaurant/:id", controller.getById);
 	app.post("/restaurant", controller.createRestaurant);
 	app.put("/restaurant/:id", controller.putData);
+	app.delete("/restaurant/:id", controller.removeRestaurant);
 
 	return controller;
 }

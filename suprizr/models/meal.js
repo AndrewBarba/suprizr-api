@@ -22,6 +22,13 @@ MealSchema.statics.create = function(data, callback) {
     (new Meal(data)).save(callback);
 }
 
+MealSchema.statics.mealsForRestaurant = function(rest_id, callback) {
+    var query = {
+        "restaurant" : rest_id
+    };
+    this.find(query, callback);
+}
+
 /**
  * Finds a Supriz meal for the given data and restaurants
  */

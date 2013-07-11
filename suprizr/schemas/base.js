@@ -22,12 +22,12 @@ BaseSchema.pre("save", function(next) {
 });
 
 BaseSchema.statics.findById = function(id, callback) {
-    return this.find({ "_id" : id, "deleted" : false})
+    return this.findOne({ "_id" : id, "deleted" : false}, callback);
 };
 
-BaseSchema.statics.findById = function(query, callback) {
+BaseSchema.statics.findAll = function(query, callback) {
     query = SP.extend(query, { "deleted" : false });
-    return this.find(query);
+    return this.find(query, callback);
 };
 
 BaseSchema.statics.putData = function(id, data, callback, allowed_keys) {

@@ -9,7 +9,7 @@ var RestaurantSchema = BaseSchema.extend({
     address: LocationSchema.dataScheme,
     description: String,
     radius: Number, // distance in MILES a restaurant delivers. NOTE: query radius is x/69 since there are 69 degrees in a mile
-    delivery_zipcodes : [Number],
+    delivery_zipcodes : [String],
     delivery_fee: Number,
     delivery_hours: {
         start: Number, // hours between 0 - 24. 5:45pm = 13.75

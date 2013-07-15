@@ -30,7 +30,7 @@ RestaurantSchema.statics.supriz = function(location, callback) {
             "$within" : { "$center" : [ location, (10/69) ] } // TODO: upgrade this to $geoWithin
         }
     };
-    Restaurant.find(restaurant_query, function(err, docs){
+    Restaurant.findAll(restaurant_query, function(err, docs){
         if (err || !docs || !docs.length) return callback(err);
         
         var ulat = location[0];

@@ -26,7 +26,7 @@ MealSchema.statics.mealsForRestaurant = function(rest_id, callback) {
     var query = {
         "restaurant" : rest_id
     };
-    this.find(query, callback);
+    this.findAll(query, callback);
 }
 
 /**
@@ -47,7 +47,7 @@ MealSchema.statics.supriz = function(restaurant_ids, meal, callback) {
             meal_query.ingredients[ing] = true;
         }
     });
-    Meal.find(meal_query, function(err, meals){
+    Meal.findAll(meal_query, function(err, meals){
         if (err || !meals || !meals.length) return callback(err);
         return callback(null, meals);
     });

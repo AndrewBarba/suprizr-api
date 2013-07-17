@@ -41,8 +41,9 @@ function MealController() {
 		if (!rest) return Error.e400(res, null, "Must provide a restaurant");
 		Auth.getCurrentUser(req, function(err, user){
 			if (err || !user) return Error.e401(res, err);
+			trace(rest);
 			Meal.mealsForRestaurant(rest, function(err, docs){
-				if (err || !doc) return Error.e404(res, err, "Could not find meals for restaurant with id "+rest);
+				if (err || !docs) return Error.e404(res, err, "Could not find meals for restaurant with id "+rest);
 				return res.json({
 					"meals" : docs
 				});
@@ -67,6 +68,7 @@ module.exports = function(app) {
 	
 	var controller = new MealController();
 
+	app.get("/meal", controller.getMealsForRestaurant);
 	app.get("/meal/:id", controller.getMeal);
 	app.put("/meal/:id", controller.editMeal);
 	app.delete("/meal/:id", controller.deleteMeal);

@@ -9,7 +9,8 @@
         "mongoose-schema-extend" : "x",
         "bcrypt" : "x",
         "cors" : "x",
-        "stripe" : "x"
+        "stripe" : "x",
+        "aws-sdk" : "x"
     },
 
     "devDependencies": {

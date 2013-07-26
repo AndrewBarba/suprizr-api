@@ -24,10 +24,11 @@ function SuprizController() {
 				Stripe.createUser(stripe_token, function(err, user, auth){
 					if (err || !auth) return Error.e400(res, err, "Failed to create a user from stripe token");
 					Order.supriz(user, req.body, function(err, order){
-						if (err || !order) return Error.e400(res, err, "Failed to create order");
-						
-						order.auth = auth;
-						res.json(auth);
+						if (err || !order) return Error.e400(res, err, "Failed to create order");						
+						res.json({
+							"auth" : auth,
+							"order" : order
+						});
 					});
 				});
 			}

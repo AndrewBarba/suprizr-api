@@ -15,6 +15,7 @@
 	},
 	"google" : {
 		"api_key" : "AIzaSyADEwRuwXbsqJM-35XXVAkBfXhYVsUgFi4",
-		"sample_search_url" : "https://maps.googleapis.com/maps/api/place/textsearch/json?query=supreme%20pizza,%20boston&sensor=false&key=AIzaSyADEwRuwXbsqJM-35XXVAkBfXhYVsUgFi4"
+		"sample_search_url" : "https://maps.googleapis.com/maps/api/place/textsearch/json?query=supreme%20pizza,%20boston&sensor=false&key=AIzaSyADEwRuwXbsqJM-35XXVAkBfXhYVsUgFi4",
+		"sample_details_url" : "https://maps.googleapis.com/maps/api/place/details/json?reference=CnRsAAAAkt93C7VGt0s6Cc1V4j-tNr98hMKvcIEhsUdd78A-oIOwxL2CqzlvaSV87WNzB1a8LAFm1lAtnmTVxJTGZJJfKZC13r2T9jYNLpJMi1b6dId_46hgzjiV1WhV3xqKHrDAJ_Um2YIdBYMYE4POtToWIxIQwN6y3jAWd9efQZinvMbughoUsVXFu4XzrY1_WVReyH_QoUI1IJc&key=AIzaSyADEwRuwXbsqJM-35XXVAkBfXhYVsUgFi4&sensor=false"
 	}
 }

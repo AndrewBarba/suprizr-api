@@ -14,7 +14,8 @@ var MealSchema = BaseSchema.extend({
         gluten_free: { type: Boolean, index: true },
         dairy_free: { type: Boolean, index: true },
         peanut_free: { type: Boolean, index: true },
-        meat_free: { type: Boolean, index: true }
+        meat_free: { type: Boolean, index: true },
+        vegan: { type: Boolean, index: true }
     }
 });
 
@@ -40,7 +41,7 @@ MealSchema.statics.supriz = function(restaurant_ids, meal, callback) {
         "health" : { "$gte" : min_health, "$lte" : meal.health },
     };
 
-    var ingredients = ["gluten_free", "dairy_free", "peanut_free", "meat_free"];
+    var ingredients = ["gluten_free", "dairy_free", "peanut_free", "meat_free", "vegan"];
     SP.each(ingredients, function(i,ing){
         if (meal.ingredients[ing]) {
             if (!meal_query.ingredients) meal_query.ingredients = {};

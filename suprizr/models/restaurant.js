@@ -28,7 +28,7 @@ RestaurantSchema.statics.create = function(data, callback) {
             if (err || !data) {
                 if (callback) callback(err);
             } else {
-                restaurant.phone_number = data.formatted_phone_number;
+                restaurant.phone_number = data.international_phone_number;
                 restaurant.save(callback);
             }
         });

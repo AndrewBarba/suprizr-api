@@ -47,7 +47,7 @@ function SPHTTP(proto) {
 		var options = {
 			"host" : "graph.facebook.com",
 			"path" : path
-		}
+		};
 		this.json(options, function(err, data){
 			if (err || !data || data.error) {
 				if (data && data.error) {
@@ -59,6 +59,46 @@ function SPHTTP(proto) {
 			}
 		});
 	}
+
+	this.place = function(ref, callback) {
+		var path = "/maps/api/place/details/json?sensor=false&reference=" + ref + "&key=" + SP_SETTINGS.google.api_key;
+		var options = {
+			"host" : "maps.googleapis.com",
+			"path" : path
+		};
+		this.json(options, function(err, data){
+			if (err || !data || !data.result) {
+				if (callback) callback(err);
+			} else {
+				if (callback) callback(null, data.result);
+			}
+		});
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = new SPHTTP(https);

@@ -1,6 +1,7 @@
 var User = require("../models/user"),
 	Auth = require("../models/auth"),
    Order = require("../models/order"),
+   Restaurant = require("../models/restaurant"),
   Stripe = require("../modules/stripe"),
    Error = require("./error_controller");
 
@@ -27,13 +28,18 @@ function OrderController() {
 			if (err || !user) return Error.e401(res, err);
 			
 			var id = req.params.id;
-			Order.findById(id, function(err, doc){
-				if (err || !doc) {
-					return Error.e404(res, err, "Could not find order with id "+id);
-				} else {
-					return res.json(doc);
-				}
-			});
+			Order
+				.findOne({"_id":id})
+				.populate("user meals restaurant")
+				.exec(function(err, doc){
+					if (err || !doc) {
+						return Error.e404(res, err, "Could not find order with id "+id);
+					} else {
+						Restaurant.populate(doc, {"path":"meals.restaurant"}, function(err, doc){
+							return res.json(doc);
+						});
+					}
+				});
 		});
 	}
 

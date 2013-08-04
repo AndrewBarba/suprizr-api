@@ -26,7 +26,6 @@ var OrderSchema = BaseSchema.extend({
 });
 
 OrderSchema.statics.supriz = function(user, data, callback) {
-    var doc = new Order();
 
     var order_data = {
         "user" : user._id,
@@ -43,8 +42,9 @@ OrderSchema.statics.supriz = function(user, data, callback) {
             if (err || !meals) return callback(err);
             var meal = SP.randomElement(meals);
             order_data["meals"] = [ meal._id ];
-            doc.putData(order_data, function(err, doc){
-                doc.populate("meals", function(err, doc){
+            var order = new Order(order_data);
+            order.save(function(err, doc){
+                order.populate("meals", function(err, doc){
                     callback(null, doc);
                 });
             });

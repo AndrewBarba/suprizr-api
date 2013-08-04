@@ -27,10 +27,10 @@ function AuthController() {
 	}
 
 	this.login.facebook = function(req, res, next) {
+		var fb_auth = req.body.facebook_auth_token;
+		if (!fb_auth) return Error.e400(res, err, "Missing facebook auth token");
+		
 		Auth.getCurrentUser(req, function(err, user){
-			var fb_auth = req.body.facebook_auth_token;
-			if (!fb_auth) return Error.e400(res, err, "Missing facebook auth token");
-			
 			if (user) { // connect an existing user to facebook
 				user.connectFacebook(fb_auth, function(err, user){
 					if (err || !user) {

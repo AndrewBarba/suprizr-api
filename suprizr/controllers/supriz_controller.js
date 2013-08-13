@@ -16,8 +16,9 @@ function SuprizController() {
 					if (err || !user) return Error.e400(res, err, "Failed to add stripe data to user");
 					Order.supriz(user, req.body, function(err, order){
 						if (err || !order) return Error.e400(res, err, "Failed to create order");
-						
-						return res.json(order);
+						return res.json({
+							"order" : order
+						});
 					});
 				});
 			} else {

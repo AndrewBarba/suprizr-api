@@ -14,12 +14,15 @@ function OrderController() {
 			var query = {
 				"order_status" : "open"
 			};
-			Order.find(query, function(err, orders){
-				if (err || !orders) return Error.e400(res, err, "Could not find any open orders");
-				res.json({
-					"orders" : orders
+			Order
+				.find(query)
+				.populate("user")
+				.exec(function(err, orders){
+					if (err || !orders) return Error.e400(res, err, "Could not find any open orders");
+					res.json({
+						"orders" : orders
+					});
 				});
-			});
 		});
 	}
 

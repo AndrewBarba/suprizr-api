@@ -467,25 +467,25 @@ describe("Supriz", function(){
 		});
 	});
 
-	var order_id = false;
-	it("should submit the order and charge the user", function(done){
-		Order.completeOrder(orders[0]._id, "The order was placed successfully", 14.75, function(err, order){
-			should.not.exist(err);
-			should.exist(order);
-			should.exist(order.stripe_charge_id);
-			order_id = order._id;
-			done();
-		});
-	});
+	// var order_id = false;
+	// it("should submit the order and charge the user", function(done){
+	// 	Order.completeOrder(orders[0]._id, "The order was placed successfully", 14.75, function(err, order){
+	// 		should.not.exist(err);
+	// 		should.exist(order);
+	// 		should.exist(order.stripe_charge_id);
+	// 		order_id = order._id;
+	// 		done();
+	// 	});
+	// });
 
-	it("should refund an order", function(done){
-		Order.cancelOrder(order_id, function(err, order){
-			should.not.exist(err);
-			should.exist(order);
-			order.order_status.should.equal("refunded");
-			done();
-		});
-	});
+	// it("should refund an order", function(done){
+	// 	Order.cancelOrder(order_id, function(err, order){
+	// 		should.not.exist(err);
+	// 		should.exist(order);
+	// 		order.order_status.should.equal("refunded");
+	// 		done();
+	// 	});
+	// });
 });
 
 
@@ -508,4 +508,4 @@ describe("Supriz", function(){
 
 
 
-clean();
+// clean();

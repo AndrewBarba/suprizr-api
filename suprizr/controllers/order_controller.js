@@ -78,7 +78,7 @@ function OrderController() {
 			
 			var order = req.params.id;
 			var description = req.body.description;
-			var status = req.body.status;
+			var status = req.body.order_status;
 			var data = {
 				"order_status" : status,
 				"order_details" : {
@@ -99,7 +99,7 @@ module.exports = function(app) {
 
 	app.get("/order", controller.getOpenOrders); // gets a list of all open orders
 	app.get("/order/:id", controller.getOrder); // gets an order
-	app.delete("/order/:id", controller.getOrder); // refunds/cancels an order or cancels it if the order has yet to be placed
+	app.delete("/order/:id", controller.cancelOrderd); // refunds/cancels an order or cancels it if the order has yet to be placed
 	app.put("/order/:id/complete", controller.completeOrder);
 	app.put("/order/:id", controller.updateOrder);
 

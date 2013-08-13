@@ -76,7 +76,7 @@ function OrderController() {
 		Auth.getAdminUser(req, function(err, admin){
 			if (err) return Error.e401(res, err);
 			
-			var order = req.params.id;
+			var order_id = req.params.id;
 			var description = req.body.description;
 			var status = req.body.order_status;
 			var data = {
@@ -85,7 +85,7 @@ function OrderController() {
 					"description" : description
 				}
 			}
-			Order.putData(id, data, function(err, order){
+			Order.putData(order_id, data, function(err, order){
 				if (err || !order) return Error.e400(res, err, "Failed to update order");
 				return res.json(order);
 			});

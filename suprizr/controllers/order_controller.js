@@ -64,8 +64,8 @@ function OrderController() {
 		Auth.getAdminUser(req, function(err, admin){
 			if (err || !admin) return Error.e401(res, err);
 			
-			var order = req.params.id;
-			Order.cancelOrder(id, function(err, order){
+			var order_id = req.params.id;
+			Order.cancelOrder(order_id, function(err, order){
 				if (err || !order) return Error.e400(res, err, "Failed to cancel/refund order");
 				return res.json(order);
 			});

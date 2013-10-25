@@ -46,7 +46,7 @@ Registers a new user via email and password
 		"last_name" : "Barba", // optional
 		"password" : "toughpassword", // this will be encrypted before saving
 		"gender" : "male", // optional
-		"phone_number" : "9085667524", // optional
+		"phone_number" : "1234567891", // optional
 	}
 
 #### POST /auth/login

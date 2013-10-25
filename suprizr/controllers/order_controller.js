@@ -50,10 +50,10 @@ function OrderController() {
 		Auth.getAdminUser(req, function(err, admin){
 			if (err || !admin) return Error.e401(res, err);
 			
-			var order = req.params.id;
+			var order_id = req.params.id;
 			var description = req.body.description;
 			var time = req.body.delivery_time;
-			Order.completeOrder(order, description, time, function(err, order){
+			Order.completeOrder(order_id, description, time, function(err, order){
 				if (err || !order) return Error.e400(res, err, "Failed to charge order");
 				return res.json(order);
 			});
